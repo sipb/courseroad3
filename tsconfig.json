@@ -10,10 +10,12 @@
     "allowJs": true,
     "strict": true,
     "noEmit": true,
-    "types": ["vinxi/types/client"],
+    "types": ["vinxi/types/client", "@testing-library/jest-dom"],
     "isolatedModules": true,
+    "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"]
     }
-  }
+  },
+  "include": ["src", "styled-system"]
 }

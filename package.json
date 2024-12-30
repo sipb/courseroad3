@@ -2,17 +2,22 @@
   "name": "example-basic",
   "type": "module",
   "scripts": {
+    "prepare": "panda codegen",
     "dev": "vinxi dev",
     "build": "vinxi build",
     "start": "vinxi start",
-    "version": "vinxi version"
+    "version": "vinxi version",
+    "test": "vitest"
   },
   "dependencies": {
+    "@ark-ui/solid": "^4.7.0",
     "@solidjs/meta": "^0.29.4",
     "@solidjs/router": "^0.15.0",
     "@solidjs/start": "^1.0.10",
     "solid-js": "^1.9.2",
-    "vinxi": "^0.4.3"
+    "vinxi": "^0.4.3",
+    "vite-plugin-solid": "^2.11.0",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "overrides": {
     "vite": "5.4.10"
@@ -20,5 +25,14 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "pnpm@9.14.4+sha512.c8180b3fbe4e4bca02c94234717896b5529740a6cbadf19fa78254270403ea2f27d4e1d46a08a0f56c89b63dc8ebfd3ee53326da720273794e6200fcf0d184ab"
+  "packageManager": "pnpm@9.14.4+sha512.c8180b3fbe4e4bca02c94234717896b5529740a6cbadf19fa78254270403ea2f27d4e1d46a08a0f56c89b63dc8ebfd3ee53326da720273794e6200fcf0d184ab",
+  "devDependencies": {
+    "@pandacss/dev": "^0.50.0",
+    "@park-ui/panda-preset": "^0.43.1",
+    "@solidjs/testing-library": "^0.8.10",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/user-event": "^14.5.2",
+    "jsdom": "^25.0.1",
+    "vitest": "^2.1.8"
+  }
 }

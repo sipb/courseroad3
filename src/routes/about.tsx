@@ -1,10 +1,11 @@
-import { Title } from "@solidjs/meta";
+import { Heading } from "~/components/ui/heading";
+import { Text } from "~/components/ui/text";
 
 export default function About() {
   return (
     <main>
-      <Title>About</Title>
-      <h1>About</h1>
+      <Heading>About CourseRoad</Heading>
+      <Text>About goes here once it's ready...</Text>
     </main>
   );
 }
