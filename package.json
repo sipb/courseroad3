@@ -11,9 +11,12 @@
 	},
 	"dependencies": {
 		"@ark-ui/solid": "^4.7.0",
+		"@solid-primitives/cookies": "^0.0.1",
+		"@solid-primitives/storage": "^4.2.1",
 		"@solidjs/meta": "^0.29.4",
 		"@solidjs/router": "^0.15.0",
 		"@solidjs/start": "^1.0.10",
+		"lucide-solid": "^0.469.0",
 		"solid-js": "^1.9.2",
 		"vinxi": "^0.4.3",
 		"vite-plugin-solid": "^2.11.0",
