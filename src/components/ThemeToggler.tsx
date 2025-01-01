@@ -1,31 +1,84 @@
 import { createUserTheme } from "@solid-primitives/cookies";
+import { usePrefersDark } from "@solid-primitives/media";
+import { defer } from "@solid-primitives/utils";
+import { useHead } from "@solidjs/meta";
+
 import { MoonIcon, SunIcon, SunMoonIcon } from "lucide-solid";
-import { type Component, createEffect } from "solid-js";
+import { type Component, createEffect, createUniqueId } from "solid-js";
 import { Match, Switch } from "solid-js";
 import { IconButton } from "~/components/ui/icon-button";
 
 const ThemeToggler: Component = () => {
-	const [theme, setTheme] = createUserTheme();
+	const [theme, setTheme] = createUserTheme("theme");
+	const prefersDark = usePrefersDark();
 
-	const handleClick = () =>
-		setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-
-	const ThemeIcon: Component<{ themeValue: ReturnType<typeof theme> }> = ({
-		themeValue,
-	}) => {
-		switch (themeValue) {
-			case "light":
-				return <SunIcon />;
+	// inspiration from https://github.com/solidjs-community/solid-primitives/blob/main/site/src/components/Header/ThemeBtn.tsx
+	const handleClick = () => {
+		switch (theme()) {
 			case "dark":
-				return <MoonIcon />;
-			default:
-				return <SunMoonIcon />;
+				{
+					if (prefersDark()) {
+						document.documentElement.classList.add("dark");
+						setTheme(undefined);
+					} else {
+						document.documentElement.classList.remove("dark");
+						setTheme("light");
+					}
+				}
+				break;
+			case "light":
+				{
+					if (prefersDark()) {
+						document.documentElement.classList.add("dark");
+						setTheme("dark");
+					} else {
+						setTheme(undefined);
+					}
+				}
+				break;
+			default: {
+				if (!prefersDark()) {
+					document.documentElement.classList.add("dark");
+					setTheme("dark");
+				} else {
+					document.documentElement.classList.remove("dark");
+					setTheme("light");
+				}
+			}
 		}
 	};
 
-	createEffect(() => {
-		// TODO: look for better ways of doing this...
-		document.body.classList.toggle("dark", theme() === "dark");
+	createEffect(
+		defer(prefersDark, (prefersDark) => {
+			if (theme() !== undefined) return;
+
+			if (prefersDark) {
+				document.documentElement.classList.add("dark");
+			} else {
+				document.documentElement.classList.remove("dark");
+			}
+		}),
+	);
+
+	useHead({
+		tag: "script",
+		props: {
+			children: `
+				// This script is used to set the theme based on the user's preference or the user's cookie
+				// using window.themeCookie to avoid HMR issues
+				window.themeCookie = document.cookie
+					.split("; ")
+					.find((row) => row.startsWith("theme"))
+					?.split("=")[1];
+				
+				if (window.themeCookie === 'dark' || ((!window.themeCookie || window.themeCookie === "undefined") && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+					document.documentElement.classList.add('dark')
+				} else {
+					document.documentElement.classList.remove('dark')
+				}`,
+		},
+		setting: { close: true },
+		id: createUniqueId(),
 	});
 
 	return (

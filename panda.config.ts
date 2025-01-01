@@ -33,24 +33,14 @@ import tomato from "@park-ui/panda-preset/colors/tomato";
 import violet from "@park-ui/panda-preset/colors/violet";
 import yellow from "@park-ui/panda-preset/colors/yellow";
 
-import typographyPreset from "pandacss-preset-typography";
-
 export default defineConfig({
-	validation: "none",
 	preflight: true,
+	minify: process.env.NODE_ENV === "production",
 	presets: [
 		createPreset({
 			accentColor: neutral,
 			grayColor: neutral,
 			radius: "sm",
-		}),
-		typographyPreset({
-			recipe: {
-				sizes: ["base"],
-				notProse: {
-					className: "not-prose",
-				},
-			},
 		}),
 	],
 	include: ["./src/**/*.{js,jsx,ts,tsx}"],
@@ -71,6 +61,10 @@ export default defineConfig({
 				},
 			},
 		},
+	},
+	globalVars: {
+		"--font-inter": "Inter Variable",
+		"--font-roboto-mono": "Roboto Mono Variable",
 	},
 	globalCss: {
 		extend: {
@@ -163,6 +157,8 @@ export default defineConfig({
 					yellow: yellow.tokens,
 				},
 				fonts: {
+					inter: { value: "var(--font-inter)" },
+					robotoMono: { value: "var(--font-roboto-mono)" },
 					body: { value: "var(--font-inter), sans-serif" },
 					code: { value: "var(--font-roboto-mono), monospace" },
 				},
@@ -200,43 +196,6 @@ export default defineConfig({
 					tomato: tomato.semanticTokens,
 					violet: violet.semanticTokens,
 					yellow: yellow.semanticTokens,
-					prose: {
-						body: {
-							value: "{colors.fg.muted}",
-						},
-						heading: {
-							value: "{colors.fg.default}",
-						},
-						link: {
-							value: "{colors.fg.default}",
-						},
-						bold: {
-							value: "{colors.fg.default}",
-						},
-
-						hrBorder: {
-							value: "{colors.border.subtle}",
-						},
-
-						quoteBorder: {
-							value: "{colors.accent.default}",
-						},
-
-						kbd: {
-							value: "{colors.slate.11}",
-						},
-
-						code: {
-							value: "{colors.fg.default}",
-						},
-
-						thBorder: {
-							value: "{colors.border.subtle}",
-						},
-						tdBorder: {
-							value: "{colors.border.subtle}",
-						},
-					},
 				},
 				radii: {
 					l1: { value: "{radii.xs}" },
