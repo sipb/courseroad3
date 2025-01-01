@@ -10,7 +10,9 @@ const About: Component<Dialog.RootProps> = (props) => {
 		<Dialog.Root {...props}>
 			<Dialog.Trigger
 				asChild={(triggerProps) => (
-					<Button {...triggerProps()}>About CourseRoad</Button>
+					<Button variant="link" {...triggerProps()}>
+						About CourseRoad
+					</Button>
 				)}
 			/>
 			<Dialog.Backdrop />

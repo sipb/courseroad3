@@ -1,6 +1,7 @@
 import { createUserTheme } from "@solid-primitives/cookies";
 import { MoonIcon, SunIcon, SunMoonIcon } from "lucide-solid";
 import { type Component, createEffect } from "solid-js";
+import { Match, Switch } from "solid-js";
 import { IconButton } from "~/components/ui/icon-button";
 
 const ThemeToggler: Component = () => {
@@ -30,7 +31,14 @@ const ThemeToggler: Component = () => {
 	return (
 		<>
 			<IconButton variant="ghost" onClick={handleClick}>
-				<ThemeIcon themeValue={theme()} />
+				<Switch fallback={<SunMoonIcon />}>
+					<Match when={theme() === "light"}>
+						<SunIcon />
+					</Match>
+					<Match when={theme() === "dark"}>
+						<MoonIcon />
+					</Match>
+				</Switch>
 			</IconButton>
 		</>
 	);

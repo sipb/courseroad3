@@ -1,1 +1,6 @@
 @layer reset, base, tokens, recipes, utilities;
+
+:root {
+	--font-inter: "Inter Variable";
+	--font-roboto-mono: "Roboto Mono Variable";
+}
