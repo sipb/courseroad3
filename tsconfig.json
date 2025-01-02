@@ -22,5 +22,4 @@
 			"~/*": ["./src/*"]
 		}
 	},
-	"include": ["src", "styled-system"]
 }
