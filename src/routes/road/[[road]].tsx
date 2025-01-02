@@ -3,6 +3,9 @@ import { useCourseDataContext } from "~/context/create";
 
 import { Flex } from "styled-system/jsx";
 import About from "~/components/About";
+import Auth from "~/components/Auth";
+import ImportExport from "~/components/ImportExport";
+import RoadTabs from "~/components/RoadTabs";
 import ThemeToggler from "~/components/ThemeToggler";
 import NavbarContainer from "~/components/layout/NavbarContainer";
 import SidebarContainer from "~/components/layout/SidebarContainer";
@@ -21,7 +24,15 @@ export default function RoadPage() {
 					<ThemeToggler />
 				</SidebarContainer>
 				<main class={styles.main}>
-					<NavbarContainer>test</NavbarContainer>
+					<NavbarContainer>
+						<div>
+							<ImportExport />
+							<Auth />
+						</div>
+						<div>
+							<RoadTabs />
+						</div>
+					</NavbarContainer>
 					<div />
 				</main>
 			</Flex>

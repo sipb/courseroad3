@@ -72,7 +72,7 @@ export default defineConfig({
 				scrollPaddingTop: "5rem",
 				scrollBehavior: "smooth",
 				minHeight: "100%",
-				colorPalette: "accent",
+				// colorPalette: "accent",
 			},
 			"html, body": {
 				display: "flex",

@@ -22,7 +22,6 @@ export const recipe = sva({
 				base: "272px",
 				lg: "calc((100vw - (1440px - 64px)) / 2 + 272px - 32px)",
 			},
-			zIndex: "overlay",
 		},
 		main: {
 			minWidth: "0",

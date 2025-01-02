@@ -4,7 +4,7 @@ import { type BoxProps, Container, Flex } from "styled-system/jsx";
 const NavbarContainer: ParentComponent = (props) => {
 	return (
 		<Flex
-			alignItems="center"
+			flexDir="column"
 			position="fixed"
 			top="0"
 			width="full"
@@ -12,9 +12,8 @@ const NavbarContainer: ParentComponent = (props) => {
 			zIndex="sticky"
 			borderBottomWidth={"1px"}
 			borderColor={{ base: "border.subtle", _dark: "black" }}
-		>
-			<Container py="2.5" {...props} />
-		</Flex>
+			{...props}
+		/>
 	);
 };
 

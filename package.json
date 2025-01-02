@@ -18,10 +18,10 @@
 		"@solid-primitives/storage": "^4.2.1",
 		"@solid-primitives/utils": "^6.2.3",
 		"@solidjs/meta": "^0.29.4",
-		"@solidjs/router": "^0.15.0",
+		"@solidjs/router": "^0.15.2",
 		"@solidjs/start": "^1.0.10",
 		"lucide-solid": "^0.469.0",
-		"solid-js": "^1.9.2",
+		"solid-js": "^1.9.3",
 		"vinxi": "^0.4.3",
 		"vite-plugin-solid": "^2.11.0",
 		"vite-tsconfig-paths": "^5.1.4"
@@ -35,16 +35,16 @@
 	"packageManager": "pnpm@9.14.4+sha512.c8180b3fbe4e4bca02c94234717896b5529740a6cbadf19fa78254270403ea2f27d4e1d46a08a0f56c89b63dc8ebfd3ee53326da720273794e6200fcf0d184ab",
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
-		"@pandacss/dev": "^0.50.0",
+		"@pandacss/dev": "^0.51.1",
 		"@park-ui/panda-preset": "^0.43.1",
 		"@solidjs/testing-library": "^0.8.10",
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/user-event": "^14.5.2",
-		"@types/node": "^22.10.2",
+		"@types/node": "^22.10.3",
 		"jsdom": "^25.0.1",
 		"postcss": "^8.4.49",
 		"typescript": "^5.7.2",
-		"typescript-eslint": "^8.18.2",
+		"typescript-eslint": "^8.19.0",
 		"vitest": "^2.1.8"
 	}
 }
