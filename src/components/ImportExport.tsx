@@ -29,7 +29,7 @@ export const styles = sva({
 	slots: ["import", "export"],
 	base: {
 		import: {},
-		export: { marginLeft: 2, marginRight: 2 },
+		export: { marginRight: 2 },
 	},
 })();
 

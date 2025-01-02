@@ -153,7 +153,11 @@ export const defaultActions = {
 	setLoggedIn: (newLoggedIn: boolean) => {},
 	setHideIAP: (value: boolean) => {},
 	setRoadProp: ({ id, prop, value, ignoreSet }) => {},
-	setRoad: ({ id, road, ignoreSet }) => {},
+	setRoad: ({
+		id,
+		road,
+		ignoreSet,
+	}: { id: string; road: Road; ignoreSet: boolean }) => {},
 	setRoads: (roads: Record<string, Road>) => {},
 	setRoadName: ({ id, name }: { id: string; name: string }) => {},
 	setSubjectsInfo: (data: SubjectFull[]) => {},
@@ -177,4 +181,12 @@ export const CourseDataContext = createContext<
 	[state: typeof defaultState, actions: typeof defaultActions]
 >([defaultState, defaultActions]);
 
-export const useCourseDataContext = () => useContext(CourseDataContext);
+export const useCourseDataContext = () => {
+	const c = useContext(CourseDataContext);
+
+	if (!c) {
+		throw new Error("Missing Course Data Provider!");
+	}
+
+	return c;
+};

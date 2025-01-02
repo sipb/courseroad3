@@ -1,16 +1,15 @@
-import { makePersisted } from "@solid-primitives/storage";
-import { type ParentComponent, createResource } from "solid-js";
+import { makePersisted, storageSync } from "@solid-primitives/storage";
+import type { ParentComponent } from "solid-js";
 import { createStore, produce, reconcile } from "solid-js/store";
 
 import { CourseDataContext, type defaultActions, defaultState } from "./create";
 import type { Subject, SubjectFull } from "./types";
 
 const CourseDataProvider: ParentComponent = (props) => {
-	const [store, setStore, init] = makePersisted(createStore(defaultState), {
+	const [store, setStore] = makePersisted(createStore(defaultState), {
 		name: "courseRoadStore",
+		sync: storageSync,
 	});
-
-	createResource(() => init)[0]();
 
 	const actions = {
 		resetState: () => {
@@ -174,7 +173,20 @@ const CourseDataProvider: ParentComponent = (props) => {
 		setLoggedIn: (newLoggedIn) => {},
 		setHideIAP: (value) => {},
 		setRoadProp: ({ id, prop, value, ignoreSet }) => {},
-		setRoad: ({ id, road, ignoreSet }) => {},
+		setRoad: ({ id, road, ignoreSet }) => {
+			if (ignoreSet) {
+				setStore("ignoreRoadChanges", true);
+			}
+			if (store.activeRoad !== id) {
+				setStore("fulfillmentNeeded", "none");
+			}
+			setStore(
+				"roads",
+				produce((roads) => {
+					roads[id] = road;
+				}),
+			);
+		},
 		setRoads: (roads) => {},
 		setRoadName: ({ id, name }) => {},
 		setSubjectsInfo: (data) => {},

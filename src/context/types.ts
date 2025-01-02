@@ -183,3 +183,12 @@ export interface CustomSubject {
 	offered_summer: boolean;
 	units?: number;
 }
+
+export interface Conflict {
+	other_name: string;
+	other_agent: string;
+	other_date: string;
+	other_contents: string;
+	this_agent: string;
+	this_date: string;
+}
