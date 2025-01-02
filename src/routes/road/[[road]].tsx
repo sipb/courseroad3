@@ -1,10 +1,12 @@
-import { useParams } from "@solidjs/router";
-import { useCourseDataContext } from "~/context/create";
-
 import { getCookiesString, parseCookie } from "@solid-primitives/cookies";
+import { useParams } from "@solidjs/router";
 import { useNavigate } from "@solidjs/router";
 import { For, createSignal, onMount } from "solid-js";
 import { createStore } from "solid-js/store";
+
+import { useCourseDataContext } from "~/context/create";
+import type { SimplifiedSelectedSubjects } from "~/context/types";
+
 import { Flex } from "styled-system/jsx";
 import About from "~/components/About";
 import Auth from "~/components/Auth";
@@ -53,9 +55,20 @@ export default function RoadPage() {
 		setActiveRoadParam();
 	});
 
+	const addRoad = (
+		roadName: string,
+		cos = ["girs"],
+		ss: SimplifiedSelectedSubjects = Array.from(Array(16), () => []),
+		overrides: {
+			[key: string]: number;
+		} = {},
+	) => {
+		// TODO: IMPLEMENT
+	};
+
 	return (
 		<>
-			<Flex pt={{ base: "28", md: "16" }}>
+			<Flex pt={20}>
 				<SidebarContainer class={styles.aside}>
 					<About />
 					<ThemeToggler />
@@ -63,7 +76,7 @@ export default function RoadPage() {
 				<main class={styles.main}>
 					<NavbarContainer>
 						<div>
-							<ImportExport />
+							<ImportExport addRoad={addRoad} />
 							<Auth />
 						</div>
 						<nav>

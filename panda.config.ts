@@ -38,8 +38,8 @@ export default defineConfig({
 	minify: process.env.NODE_ENV === "production",
 	presets: [
 		createPreset({
-			accentColor: neutral,
-			grayColor: neutral,
+			accentColor: blue,
+			grayColor: slate,
 			radius: "sm",
 		}),
 	],

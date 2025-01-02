@@ -5,11 +5,13 @@ import {
 	createMemo,
 	createSignal,
 } from "solid-js";
+
 import { Tabs } from "~/components/ui/tabs";
+
 import { useCourseDataContext } from "~/context/create";
 
 const RoadTabs: Component = (props) => {
-	const [store] = useCourseDataContext();
+	const [store, { setActiveRoad }] = useCourseDataContext();
 
 	const [addDialog, setAddDialog] = createSignal(false);
 	const [deleteDialog, setDeleteDialog] = createSignal(false);
@@ -18,14 +20,10 @@ const RoadTabs: Component = (props) => {
 	const [duplicateRoadSource, setDuplicateRoadSource] =
 		createSignal("$defaultroad$");
 	const [newRoadName, setNewRoadName] = createSignal("");
-	const [tabRoad, setTabRoad] = createSignal(store.activeRoad);
-
-	const activeRoad = createMemo(() => store.activeRoad);
-	const roads = createMemo(() => store.roads);
 
 	const otherRoadHasName = (roadID: string, roadName: string) => {
-		const otherRoadNames = Object.keys(roads()).map((road) => {
-			return road === roadID ? undefined : roads()[road].name.toLowerCase();
+		const otherRoadNames = Object.keys(store.roads).map((road) => {
+			return road === roadID ? undefined : store.roads[road].name.toLowerCase();
 		});
 		return otherRoadNames.indexOf(roadName.toLowerCase()) >= 0;
 	};
@@ -33,10 +31,6 @@ const RoadTabs: Component = (props) => {
 	const validRoadName = createMemo(
 		() => !(otherRoadHasName("", newRoadName()) || newRoadName() === ""),
 	);
-
-	createEffect(() => {
-		setTabRoad(activeRoad());
-	});
 
 	createEffect(() => {
 		if (
@@ -49,14 +43,16 @@ const RoadTabs: Component = (props) => {
 
 	return (
 		<Tabs.Root
-			value={tabRoad()}
-			onValueChange={(e) => setTabRoad(e.value)}
+			value={store.activeRoad}
+			onValueChange={(e) => setActiveRoad(e.value)}
 			{...props}
 		>
 			<Tabs.List>
-				<For each={Object.keys(roads())}>
+				<For each={Object.keys(store.roads)}>
 					{(roadId) => (
-						<Tabs.Trigger value={roadId}>{roads()[roadId].name}</Tabs.Trigger>
+						<Tabs.Trigger value={roadId}>
+							{store.roads[roadId].name}
+						</Tabs.Trigger>
 					)}
 				</For>
 				<Tabs.Indicator />

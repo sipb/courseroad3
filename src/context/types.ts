@@ -7,6 +7,10 @@ export interface Subject {
 	offered_spring: boolean;
 	offered_summer: boolean;
 	public: boolean;
+	semester?: number; // specifically for when in a road...
+	units?: number; // is manually set in some places
+	index?: number; // is also manually set idk why
+	overrideWarnings?: boolean; // is also manually set by user
 	level?: "U" | "G";
 	is_historical?: boolean;
 	source_semester?: string;

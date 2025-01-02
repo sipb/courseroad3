@@ -1,5 +1,6 @@
-import { XIcon } from "lucide-solid";
 import type { Component } from "solid-js";
+
+import { XIcon } from "lucide-solid";
 import { Stack } from "styled-system/jsx";
 import { Button } from "~/components/ui/button";
 import { Dialog } from "~/components/ui/dialog";

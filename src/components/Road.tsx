@@ -1,7 +1,9 @@
-import { ChevronDownIcon } from "lucide-solid";
 import type { Component } from "solid-js";
 import { For, createSignal } from "solid-js";
+
+import { ChevronDownIcon } from "lucide-solid";
 import { Accordion } from "~/components/ui/accordion";
+
 import type { SimplifiedSelectedSubjects } from "~/context/types";
 
 const Road: Component<{
@@ -58,7 +60,7 @@ const Road: Component<{
 							</Accordion.ItemIndicator>
 						</Accordion.ItemTrigger>
 						<Accordion.ItemContent>
-							Classes go here for semester {index}
+							Classes go here for semester {index} in road {props.roadID}
 						</Accordion.ItemContent>
 					</Accordion.Item>
 				)}

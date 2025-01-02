@@ -11,6 +11,8 @@ const NavbarContainer: ParentComponent = (props) => {
 			background="bg.canvas"
 			zIndex="sticky"
 			borderBottomWidth={"1px"}
+			paddingTop={2}
+			gap={4}
 			borderColor={{ base: "border.subtle", _dark: "black" }}
 			{...props}
 		/>

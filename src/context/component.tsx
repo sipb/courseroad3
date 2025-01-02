@@ -1,13 +1,9 @@
 import { makePersisted } from "@solid-primitives/storage";
 import { type ParentComponent, createResource } from "solid-js";
 import { createStore, produce, reconcile } from "solid-js/store";
+
 import { CourseDataContext, type defaultActions, defaultState } from "./create";
-import type {
-	CustomSubject,
-	SelectedSubjects,
-	Subject,
-	SubjectFull,
-} from "./types";
+import type { Subject, SubjectFull } from "./types";
 
 const CourseDataProvider: ParentComponent = (props) => {
 	const [store, setStore, init] = makePersisted(createStore(defaultState), {
@@ -171,7 +167,9 @@ const CourseDataProvider: ParentComponent = (props) => {
 		removeReq: (event) => {},
 		removeProgressAssertion: (uniqueKey) => {},
 		resetID: ({ oldid, newid }) => {},
-		setActiveRoad: (activeRoad) => {},
+		setActiveRoad: (activeRoad) => {
+			setStore("activeRoad", activeRoad);
+		},
 		setFullSubjectsInfoLoaded: (isFull) => {},
 		setLoggedIn: (newLoggedIn) => {},
 		setHideIAP: (value) => {},
