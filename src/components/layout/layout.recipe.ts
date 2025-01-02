@@ -30,7 +30,7 @@ export const recipe = sva({
 				base: "0",
 				md: "max(calc((100vw - 1440px) / 2 + 272px), 272px)",
 			},
-			pe: "calc((100vw - 1440px) / 2)",
+			// pe: "calc((100vw - 1440px) / 2)",
 		},
 	},
 });

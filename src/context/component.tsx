@@ -20,7 +20,7 @@ const CourseDataProvider: ParentComponent = (props) => {
 		resetState: () => {
 			setStore(reconcile(defaultState));
 		},
-		addClass: (newClass: SelectedSubjects) => {
+		addClass: (newClass) => {
 			setStore(
 				"roads",
 				produce((roads) => {
@@ -31,7 +31,7 @@ const CourseDataProvider: ParentComponent = (props) => {
 				}),
 			);
 		},
-		addFromCard: (newClass: SubjectFull) => {
+		addFromCard: (newClass) => {
 			setStore("addingFromCard", true);
 			setStore("itemAdding", newClass);
 		},
@@ -45,7 +45,7 @@ const CourseDataProvider: ParentComponent = (props) => {
 			);
 			setStore("fulfillmentNeeded", event);
 		},
-		migrateOldSubjects: (roadID: string) => {
+		migrateOldSubjects: (roadID) => {
 			setStore(
 				"roads",
 				produce((roads) => {
@@ -100,7 +100,7 @@ const CourseDataProvider: ParentComponent = (props) => {
 		disallowCookies() {
 			setStore("cookiesAllowed", false);
 		},
-		deleteRoad(id: string) {
+		deleteRoad(id) {
 			setStore("ignoreRoadChanges", true);
 			setStore(
 				"roads",
@@ -131,10 +131,10 @@ const CourseDataProvider: ParentComponent = (props) => {
 			setStore("itemAdding", reconcile(classInfo));
 			setStore("addingFromCard", false);
 		},
-		editCustomClass: (classInfo: CustomSubject) => {
+		editCustomClass: (classInfo) => {
 			setStore("customClassEditing", reconcile(classInfo));
 		},
-		finishEditCustomClass: (newClass: CustomSubject) => {
+		finishEditCustomClass: (newClass) => {
 			setStore(
 				"customClassEditing",
 				produce((customClassEditing) => {
@@ -156,44 +156,44 @@ const CourseDataProvider: ParentComponent = (props) => {
 
 			setStore("customClassEditing", undefined);
 		},
-		moveClass: () => {},
-		overrideWarnings: () => {},
-		setPASubstitutions: () => {},
-		setPAIgnore: () => {},
-		setUnretrieved: () => {},
-		setRetrieved: () => {},
+		moveClass: ({ currentClass, classIndex, semester }) => {},
+		overrideWarnings: (payload) => {},
+		setPASubstitutions: ({ uniqueKey, newReqs }) => {},
+		setPAIgnore: ({ uniqueKey, isIgnored }) => {},
+		setUnretrieved: (roadIDs) => {},
+		setRetrieved: (roadID) => {},
 		parseGenericCourses: () => {},
 		parseGenericIndex: () => {},
 		parseSubjectsIndex: () => {},
 		popClassStack: () => {},
-		pushClassStack: () => {},
-		removeClass: () => {},
-		removeReq: () => {},
-		removeProgressAssertion: () => {},
-		resetID: () => {},
-		setActiveRoad: () => {},
-		setFullSubjectsInfoLoaded: () => {},
-		setLoggedIn: () => {},
-		setHideIAP: () => {},
-		setRoadProp: () => {},
-		setRoad: () => {},
-		setRoads: () => {},
-		setRoadName: () => {},
-		setSubjectsInfo: () => {},
-		setCurrentSemester: () => {},
-		updateProgress: () => {},
-		setFromLocalStorage: () => {},
-		updateRoad: () => {},
+		pushClassStack: (id) => {},
+		removeClass: ({ classInfo, classIndex }) => {},
+		removeReq: (event) => {},
+		removeProgressAssertion: (uniqueKey) => {},
+		resetID: ({ oldid, newid }) => {},
+		setActiveRoad: (activeRoad) => {},
+		setFullSubjectsInfoLoaded: (isFull) => {},
+		setLoggedIn: (newLoggedIn) => {},
+		setHideIAP: (value) => {},
+		setRoadProp: ({ id, prop, value, ignoreSet }) => {},
+		setRoad: ({ id, road, ignoreSet }) => {},
+		setRoads: (roads) => {},
+		setRoadName: ({ id, name }) => {},
+		setSubjectsInfo: (data) => {},
+		setCurrentSemester: (sem) => {},
+		updateProgress: (progress) => {},
+		// setFromLocalStorage: (localStore) => {},
+		updateRoad: (id, road) => {},
 		watchRoadChanges: () => {},
 		resetFulfillmentNeeded: () => {},
-		setLoadSubjectsPromise: () => {},
+		setLoadSubjectsPromise: (promise) => {},
 		setSubjectsLoaded: () => {},
-		queueRoadMigration: () => {},
+		queueRoadMigration: (roadID) => {},
 		clearMigrationQueue: () => {},
 		loadSubjects: async () => {},
-		addAtPlaceholder: () => {},
+		addAtPlaceholder: (index) => {},
 		waitLoadSubjects: async () => {},
-		waitAndMigrateOldSubjects: () => {},
+		waitAndMigrateOldSubjects: (roadID) => {},
 	} satisfies typeof defaultActions;
 
 	return (
