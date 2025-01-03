@@ -56,6 +56,11 @@ export const defaultState = {
 		return Math.floor((this.currentSemester - 1) / 3);
 	},
 
+	get roadKeys() {
+		if (!this.roads) return [];
+		return Object.keys(this.roads);
+	},
+
 	getMatchingAttributes(gir?: string, hass?: string, ci?: string) {
 		const matchingClasses = this.subjectsInfo.filter((subject) => {
 			if (gir !== undefined && subject.gir_attribute !== gir) {

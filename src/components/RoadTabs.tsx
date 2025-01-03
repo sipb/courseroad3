@@ -1,14 +1,13 @@
 import {
 	type Component,
+	ErrorBoundary,
 	For,
-	Index,
 	Show,
 	createEffect,
 	createMemo,
 	createSignal,
 	on,
 } from "solid-js";
-import { unwrap } from "solid-js/store";
 
 import {
 	CheckIcon,
@@ -48,10 +47,14 @@ const RoadTabs: Component<{
 	const [duplicateRoadSource, setDuplicateRoadSource] =
 		createSignal("$defaultroad$");
 	const [newRoadName, setNewRoadName] = createSignal("");
-	const [tabRoad, setTabRoad] = createSignal(store.activeRoad);
+
+	const [roadKeys, setRoadKeys] = createSignal(["$defaultroad$"] as string[]);
+	createEffect(() => {
+		setRoadKeys(store.roadKeys);
+	});
 
 	const otherRoadHasName = (roadID: string, roadName: string) => {
-		const otherRoadNames = Object.keys(store.roads).map((road) => {
+		const otherRoadNames = roadKeys().map((road) => {
 			return road === roadID ? undefined : store.roads[road].name.toLowerCase();
 		});
 		return otherRoadNames.indexOf(roadName.toLowerCase()) >= 0;
@@ -61,10 +64,32 @@ const RoadTabs: Component<{
 		() => !(otherRoadHasName("", newRoadName()) || newRoadName() === ""),
 	);
 
-	const renameRoad = () => {
-		setRoadName({ id: tabRoad(), name: newRoadName() });
-		setEditDialog(false);
-		setNewRoadName("");
+	createEffect(
+		on(
+			() => store.unretrieved,
+			() => {
+				if (
+					addDialog() === true &&
+					store.unretrieved.indexOf(duplicateRoadSource()) === -1
+				) {
+					addRoadFromDuplicate();
+				}
+			},
+		),
+	);
+
+	const createRoad = () => {
+		if (!duplicateRoad()) {
+			props.addRoad(newRoadName());
+			setAddDialog(false);
+			setNewRoadName("");
+		} else if (duplicateRoadSource() in store.roads) {
+			if (store.unretrieved.indexOf(duplicateRoadSource()) >= 0) {
+				props.retrieve(duplicateRoadSource());
+			} else {
+				addRoadFromDuplicate();
+			}
+		}
 	};
 
 	const addRoadFromDuplicate = () => {
@@ -83,44 +108,15 @@ const RoadTabs: Component<{
 		setNewRoadName("");
 	};
 
-	const createRoad = () => {
-		if (!duplicateRoad()) {
-			props.addRoad(newRoadName());
-			setAddDialog(false);
-			setNewRoadName("");
-		} else if (duplicateRoadSource() in store.roads) {
-			if (store.unretrieved.indexOf(duplicateRoadSource()) >= 0) {
-				props.retrieve(duplicateRoadSource());
-			} else {
-				addRoadFromDuplicate();
-			}
-		}
+	const renameRoad = () => {
+		setRoadName({ id: store.activeRoad, name: newRoadName() });
+		setEditDialog(false);
+		setNewRoadName("");
 	};
-
-	createEffect(
-		on(
-			() => store.unretrieved,
-			() => {
-				if (
-					addDialog() === true &&
-					store.unretrieved.indexOf(duplicateRoadSource()) === -1
-				) {
-					addRoadFromDuplicate();
-				}
-			},
-		),
-	);
-
-	createEffect(
-		on(
-			() => store.activeRoad,
-			() => setTabRoad(store.activeRoad),
-		),
-	);
 
 	const roadCollection = createMemo(() =>
 		createListCollection({
-			items: Object.keys(store.roads).map((road) => ({
+			items: roadKeys().map((road) => ({
 				value: road,
 				label: store.roads[road].name,
 			})),
@@ -129,16 +125,19 @@ const RoadTabs: Component<{
 
 	return (
 		<>
-			<Tabs.Root value={tabRoad()} onValueChange={(e) => setTabRoad(e.value)}>
+			<Tabs.Root
+				value={store.activeRoad}
+				onValueChange={(e) => setActiveRoad(e.value)}
+			>
 				<Tabs.List>
-					<For each={Object.keys(store.roads)} fallback={null}>
+					<For each={roadKeys()} fallback={null}>
 						{(roadId) => (
 							<Tabs.Trigger
 								value={roadId}
-								onClick={(e) => setActiveRoad(roadId)}
+								onClick={() => setActiveRoad(roadId)}
 							>
 								{store.roads[roadId].name}
-								<Show when={tabRoad() === roadId} fallback={null}>
+								<Show when={store.activeRoad === roadId} fallback={null}>
 									<IconButton
 										variant="link"
 										onClick={() => {
@@ -152,16 +151,18 @@ const RoadTabs: Component<{
 							</Tabs.Trigger>
 						)}
 					</For>
+					<IconButton
+						variant="ghost"
+						aria-label="Add road"
+						alignSelf="center"
+						onClick={() => setAddDialog(true)}
+					>
+						<PlusIcon />
+					</IconButton>
 					<Tabs.Indicator />
 				</Tabs.List>
 			</Tabs.Root>
-			<IconButton
-				variant="ghost"
-				aria-label="Add road"
-				onClick={() => setAddDialog(true)}
-			>
-				<PlusIcon />
-			</IconButton>
+
 			<Dialog.Root
 				lazyMount
 				open={editDialog()}

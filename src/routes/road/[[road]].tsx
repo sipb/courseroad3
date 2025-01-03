@@ -1,7 +1,14 @@
 import { getCookiesString, parseCookie } from "@solid-primitives/cookies";
 import { useParams } from "@solidjs/router";
 import { useNavigate } from "@solidjs/router";
-import { For, createSignal, onMount } from "solid-js";
+import {
+	ErrorBoundary,
+	For,
+	createEffect,
+	createMemo,
+	createSignal,
+	onMount,
+} from "solid-js";
 import { createStore } from "solid-js/store";
 
 import { useCourseDataContext } from "~/context/create";
@@ -90,6 +97,11 @@ export default function RoadPage() {
 		authComponentRef?.setNewRoads([...authComponentRef.newRoads, tempRoadID]);
 	};
 
+	const [roadKeys, setRoadKeys] = createSignal(["$defaultroad$"] as string[]);
+	createEffect(() => {
+		setRoadKeys(store.roadKeys);
+	});
+
 	return (
 		<>
 			<Flex>
@@ -118,8 +130,8 @@ export default function RoadPage() {
 							/>
 						</Flex>
 					</NavbarContainer>
-					<Tabs.Root value={store.activeRoad}>
-						<For each={Object.keys(store.roads)} fallback={null}>
+					<Tabs.Root lazyMount unmountOnExit value={store.activeRoad}>
+						<For each={roadKeys()} fallback={null}>
 							{(roadId) => (
 								<Tabs.Content pt={0} value={roadId}>
 									<Road
