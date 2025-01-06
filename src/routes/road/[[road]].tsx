@@ -175,44 +175,46 @@ export default function RoadPage() {
 					<ThemeToggler />
 				</SidebarContainer>
 				<main class={styles.main}>
-					<NavbarContainer>
-						<Flex flexDirection="row" justifyContent="space-between">
-							<ImportExport addRoad={addRoad} />
-							<Auth
-								justLoaded={justLoaded()}
-								conflictInfo={conflictInfo()}
-								conflict={conflict}
-								resolveConflict={resolveConflict}
-								ref={authComponentRef}
-							/>
-							<div>
-								<Input placeholder="Add classes" width={"30ch"} />
-							</div>
-						</Flex>
-						<Flex flexDirection="row" justifyContent="space-between">
-							<RoadTabs
-								addRoad={addRoad}
-								deleteRoad={(e) => authComponentRef?.deleteRoad(e)}
-								retrieve={(e) => authComponentRef?.retrieveRoad(e)}
-								roadKeys={roadKeys()}
-							/>
-						</Flex>
-					</NavbarContainer>
-					<Tabs.Root lazyMount unmountOnExit value={store.activeRoad}>
+					<Tabs.Root
+						lazyMount
+						unmountOnExit
+						value={activeRoad()}
+						onValueChange={(e) => setActiveRoad(e.value)}
+					>
+						<NavbarContainer>
+							<Flex flexDirection="row" justifyContent="space-between">
+								<ImportExport addRoad={addRoad} />
+								<Auth
+									justLoaded={justLoaded()}
+									conflictInfo={conflictInfo()}
+									conflict={conflict}
+									resolveConflict={resolveConflict}
+									ref={authComponentRef}
+								/>
+								<div>
+									<Input placeholder="Add classes" width={"30ch"} />
+								</div>
+							</Flex>
+							<Flex flexDirection="row" justifyContent="space-between">
+								<RoadTabs
+									addRoad={addRoad}
+									deleteRoad={(e) => authComponentRef?.deleteRoad(e)}
+									retrieve={(e) => authComponentRef?.retrieveRoad(e)}
+									roadKeys={roadKeys()}
+								/>
+							</Flex>
+						</NavbarContainer>
 						<For each={roadKeys()} fallback={null}>
 							{(roadId) => (
-								<Tabs.Content pt={0} value={roadId}>
+								<Tabs.Content pt={0} px={2} value={roadId}>
 									<Road
-										selectedSubjects={
-											store.roads[roadId].contents.selectedSubjects
-										}
+										selectedSubjects={roads()[roadId].contents.selectedSubjects}
 										roadID={roadId}
-										addingFromCard={
-											store.addingFromCard && store.activeRoad === roadId
-										}
+										addingFromCard={addingFromCard() && activeRoad() === roadId}
 										dragSemesterNum={
-											store.activeRoad === roadId ? dragSemesterNum() : -1
+											activeRoad() === roadId ? dragSemesterNum() : -1
 										}
+										changeYear={(e) => authComponentRef?.changeSemester(e)}
 									/>
 								</Tabs.Content>
 							)}

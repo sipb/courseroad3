@@ -192,7 +192,9 @@ const CourseDataProvider: ParentComponent = (props) => {
 		setLoggedIn: (newLoggedIn) => {
 			setStore("loggedIn", newLoggedIn);
 		},
-		setHideIAP: (value) => {},
+		setHideIAP: (value) => {
+			setStore("hideIAP", value);
+		},
 		setRoadProp: ({ id, prop, value, ignoreSet }) => {},
 		setRoad: ({ id, road, ignoreSet }) => {
 			if (ignoreSet) {

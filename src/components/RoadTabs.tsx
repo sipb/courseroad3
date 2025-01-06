@@ -126,43 +126,35 @@ const RoadTabs: Component<{
 
 	return (
 		<>
-			<Tabs.Root
-				value={activeRoad()}
-				onValueChange={(e) => setActiveRoad(e.value)}
-			>
-				<Tabs.List>
-					<For each={props.roadKeys} fallback={null}>
-						{(roadId) => (
-							<Tabs.Trigger
-								value={roadId}
-								onClick={() => setActiveRoad(roadId)}
-							>
-								{roads()?.[roadId]?.name}
-								<Show when={activeRoad() === roadId} fallback={null}>
-									<IconButton
-										variant="link"
-										onClick={() => {
-											setNewRoadName(roads()?.[roadId]?.name);
-											setEditDialog(true);
-										}}
-									>
-										<PencilIcon />
-									</IconButton>
-								</Show>
-							</Tabs.Trigger>
-						)}
-					</For>
-					<IconButton
-						variant="ghost"
-						aria-label="Add road"
-						alignSelf="center"
-						onClick={() => setAddDialog(true)}
-					>
-						<PlusIcon />
-					</IconButton>
-					<Tabs.Indicator />
-				</Tabs.List>
-			</Tabs.Root>
+			<Tabs.List flexGrow={1}>
+				<For each={props.roadKeys} fallback={null}>
+					{(roadId) => (
+						<Tabs.Trigger value={roadId}>
+							{roads()?.[roadId]?.name}
+							<Show when={activeRoad() === roadId} fallback={null}>
+								<IconButton
+									variant="link"
+									onClick={() => {
+										setNewRoadName(roads()?.[roadId]?.name);
+										setEditDialog(true);
+									}}
+								>
+									<PencilIcon />
+								</IconButton>
+							</Show>
+						</Tabs.Trigger>
+					)}
+				</For>
+				<IconButton
+					variant="ghost"
+					aria-label="Add road"
+					alignSelf="center"
+					onClick={() => setAddDialog(true)}
+				>
+					<PlusIcon />
+				</IconButton>
+				<Tabs.Indicator />
+			</Tabs.List>
 
 			<Dialog.Root
 				lazyMount

@@ -49,12 +49,12 @@
 		"@solidjs/testing-library": "^0.8.10",
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/user-event": "^14.5.2",
-		"@types/node": "^22.10.3",
+		"@types/node": "^22.10.5",
 		"jsdom": "^25.0.1",
 		"postcss": "^8.4.49",
 		"solid-devtools": "^0.33.0",
 		"typescript": "^5.7.2",
-		"typescript-eslint": "^8.19.0",
+		"typescript-eslint": "^8.19.1",
 		"vitest": "^2.1.8"
 	},
 	"bugs": {
@@ -65,8 +65,5 @@
 		"url": "git+https://github.com/sipb/courseroad3.git"
 	},
 	"license": "MIT",
-	"keywords": [
-		"mit",
-		"courseroad"
-	]
+	"keywords": ["mit", "courseroad"]
 }

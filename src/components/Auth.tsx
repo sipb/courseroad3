@@ -53,6 +53,7 @@ export type AuthRef = {
 		setNewRoads: (newRoads: string[]) => void;
 		save: (roadID: string) => void;
 		gettingUserData: boolean;
+		changeSemester: (year: number) => void;
 	}): void;
 	deleteRoad: (roadName: string) => void;
 	retrieveRoad: (roadID: string) => Promise<RoadResponse | undefined>;
@@ -60,6 +61,7 @@ export type AuthRef = {
 	setNewRoads: (newRoads: string[]) => void;
 	save: (roadID: string) => void;
 	gettingUserData: boolean;
+	changeSemester: (year: number) => void;
 };
 
 const Auth: Component<{
@@ -862,6 +864,7 @@ const Auth: Component<{
 		gettingUserData: gettingUserData(),
 		setNewRoads: setNewRoadsRef,
 		save,
+		changeSemester,
 	});
 
 	return (
