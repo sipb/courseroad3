@@ -1,10 +1,15 @@
 {
-	"name": "example-basic",
+	"name": "courseroad",
+	"version": "2.0.0",
+	"description": "Course planning for MIT undergrads",
+	"author": "courseroad-dev team",
 	"type": "module",
 	"scripts": {
 		"prepare": "panda codegen",
 		"dev": "vinxi dev",
-		"build": "vinxi build",
+		"devdev": "vinxi dev --mode devdev",
+		"build-dev": "vinxi build --mode staging --base /dev",
+		"build-prod": "vinxi build",
 		"start": "vinxi start",
 		"version": "vinxi version",
 		"test": "vitest",
@@ -46,8 +51,21 @@
 		"@types/node": "^22.10.3",
 		"jsdom": "^25.0.1",
 		"postcss": "^8.4.49",
+		"solid-devtools": "^0.33.0",
 		"typescript": "^5.7.2",
 		"typescript-eslint": "^8.19.0",
 		"vitest": "^2.1.8"
-	}
+	},
+	"bugs": {
+		"url": "https://github.com/sipb/courseroad3/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/sipb/courseroad3.git"
+	},
+	"license": "MIT",
+	"keywords": [
+		"mit",
+		"courseroad"
+	]
 }
