@@ -184,11 +184,38 @@ export interface CustomSubject {
 	units?: number;
 }
 
+export interface SyncRoadPost {
+	id: string;
+	contents: RoadContents;
+	changed: string;
+	downloaded: string;
+	name: string;
+	agent: string;
+	override: boolean;
+}
+
+export interface SyncRoadResponse extends SyncRoadPost {
+	success?: boolean;
+	error?: string;
+	error_msg?: string;
+	result?: "update_remote" | "update_local" | "conflict" | "no_change";
+	other_name?: string;
+	other_agent?: string;
+	other_date?: string;
+	other_contents?: RoadContents;
+	this_agent?: string;
+	this_date?: string;
+}
+
 export interface Conflict {
 	other_name: string;
 	other_agent: string;
 	other_date: string;
-	other_contents: string;
+	other_contents: RoadContents;
 	this_agent: string;
 	this_date: string;
+}
+
+export interface SubjectWithId extends Subject {
+	id?: string;
 }

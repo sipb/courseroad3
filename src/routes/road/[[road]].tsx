@@ -2,11 +2,11 @@ import { getCookiesString, parseCookie } from "@solid-primitives/cookies";
 import { useParams } from "@solidjs/router";
 import { useNavigate } from "@solidjs/router";
 import {
-	ErrorBoundary,
 	For,
 	createEffect,
 	createMemo,
 	createSignal,
+	on,
 	onMount,
 } from "solid-js";
 import { createStore } from "solid-js/store";
@@ -31,8 +31,18 @@ const styles = layoutRecipe();
 
 export default function RoadPage() {
 	const params = useParams();
-	const [store, { setActiveRoad, setRoad, resetFulfillmentNeeded }] =
-		useCourseDataContext();
+	const [
+		store,
+		{
+			setActiveRoad,
+			setRoad,
+			resetFulfillmentNeeded,
+			allowCookies,
+			watchRoadChanges,
+			setRetrieved,
+			getRoadKeys,
+		},
+	] = useCourseDataContext();
 	const cookiesString = getCookiesString();
 	const navigate = useNavigate();
 
@@ -61,6 +71,53 @@ export default function RoadPage() {
 		}
 		return false;
 	};
+
+	const activeRoad = createMemo(() => store.activeRoad);
+	const addingFromCard = createMemo(() => store.addingFromCard);
+	const cookiesAllowed = createMemo(() => store.cookiesAllowed);
+	const roads = createMemo(() => store.roads);
+
+	createEffect(
+		on(activeRoad, (newRoad) => {
+			if (
+				store.unretrieved.indexOf(newRoad) >= 0 &&
+				!authComponentRef?.gettingUserData
+			) {
+				authComponentRef?.retrieveRoad(newRoad).then(() => {
+					setRetrieved(newRoad);
+				});
+			} else if (newRoad !== "") {
+				// TODO: IMPLEMENT
+				// updateFulfillment(store.fulfillmentNeeded);
+			}
+			// If just loaded, store isn't loaded yet
+			// and so we can't overwrite the router just yet
+			if (newRoad !== "" && !justLoaded()) {
+				navigate(`/road/${newRoad}`);
+			}
+			setJustLoaded(false);
+		}),
+	);
+
+	createEffect(
+		on(roads, () => {
+			setJustLoaded(false);
+			if (cookiesAllowed() === undefined) {
+				allowCookies();
+			}
+			if (activeRoad() !== "") {
+				// TODO: IMPLEMENT
+				// updateFulfillment(store.fulfillmentNeeded);
+			}
+			resetFulfillmentNeeded();
+
+			if (!store.ignoreRoadChanges) {
+				authComponentRef?.save(activeRoad());
+			} else {
+				watchRoadChanges();
+			}
+		}),
+	);
 
 	onMount(() => {
 		setActiveRoadParam();
@@ -99,8 +156,16 @@ export default function RoadPage() {
 
 	const [roadKeys, setRoadKeys] = createSignal(["$defaultroad$"] as string[]);
 	createEffect(() => {
-		setRoadKeys(store.roadKeys);
+		setRoadKeys(getRoadKeys());
 	});
+
+	const conflict = () => {
+		// TODO: IMPLEMENT
+	};
+
+	const resolveConflict = () => {
+		// TODO: IMPLEMENT
+	};
 
 	return (
 		<>
@@ -116,6 +181,8 @@ export default function RoadPage() {
 							<Auth
 								justLoaded={justLoaded()}
 								conflictInfo={conflictInfo()}
+								conflict={conflict}
+								resolveConflict={resolveConflict}
 								ref={authComponentRef}
 							/>
 							<div>
@@ -127,6 +194,7 @@ export default function RoadPage() {
 								addRoad={addRoad}
 								deleteRoad={(e) => authComponentRef?.deleteRoad(e)}
 								retrieve={(e) => authComponentRef?.retrieveRoad(e)}
+								roadKeys={roadKeys()}
 							/>
 						</Flex>
 					</NavbarContainer>

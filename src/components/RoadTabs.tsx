@@ -37,6 +37,7 @@ const RoadTabs: Component<{
 	) => void;
 	deleteRoad: (roadName: string) => void;
 	retrieve: (roadName: string) => void;
+	roadKeys?: string[];
 }> = (props) => {
 	const [store, { setRoadName, setActiveRoad }] = useCourseDataContext();
 
@@ -48,18 +49,17 @@ const RoadTabs: Component<{
 		createSignal("$defaultroad$");
 	const [newRoadName, setNewRoadName] = createSignal("");
 
-	const [roadKeys, setRoadKeys] = createSignal(["$defaultroad$"] as string[]);
-	createEffect(() => {
-		setRoadKeys(store.roadKeys);
-	});
-
 	const otherRoadHasName = (roadID: string, roadName: string) => {
-		const otherRoadNames = roadKeys().map((road) => {
-			return road === roadID ? undefined : store.roads[road].name.toLowerCase();
+		const otherRoadNames = props.roadKeys?.map((road) => {
+			return road === roadID ? undefined : roads()?.[road]?.name.toLowerCase();
 		});
-		return otherRoadNames.indexOf(roadName.toLowerCase()) >= 0;
+		return (
+			otherRoadNames && otherRoadNames.indexOf(roadName.toLowerCase()) >= 0
+		);
 	};
 
+	const activeRoad = createMemo(() => store.activeRoad);
+	const roads = createMemo(() => store.roads);
 	const validRoadName = createMemo(
 		() => !(otherRoadHasName("", newRoadName()) || newRoadName() === ""),
 	);
@@ -83,7 +83,7 @@ const RoadTabs: Component<{
 			props.addRoad(newRoadName());
 			setAddDialog(false);
 			setNewRoadName("");
-		} else if (duplicateRoadSource() in store.roads) {
+		} else if (duplicateRoadSource() in roads()) {
 			if (store.unretrieved.indexOf(duplicateRoadSource()) >= 0) {
 				props.retrieve(duplicateRoadSource());
 			} else {
@@ -95,13 +95,13 @@ const RoadTabs: Component<{
 	const addRoadFromDuplicate = () => {
 		props.addRoad(
 			newRoadName(),
-			store.roads[duplicateRoadSource()].contents.coursesOfStudy.slice(0),
-			store.roads[duplicateRoadSource()].contents.selectedSubjects.map(
+			roads()?.[duplicateRoadSource()].contents.coursesOfStudy.slice(0),
+			roads()?.[duplicateRoadSource()].contents.selectedSubjects.map(
 				(semester) => semester.slice(0),
 			),
 			Object.assign(
 				{},
-				store.roads[duplicateRoadSource()].contents.progressOverrides,
+				roads()?.[duplicateRoadSource()].contents.progressOverrides,
 			),
 		);
 		setAddDialog(false);
@@ -109,39 +109,40 @@ const RoadTabs: Component<{
 	};
 
 	const renameRoad = () => {
-		setRoadName({ id: store.activeRoad, name: newRoadName() });
+		setRoadName({ id: activeRoad(), name: newRoadName() });
 		setEditDialog(false);
 		setNewRoadName("");
 	};
 
 	const roadCollection = createMemo(() =>
 		createListCollection({
-			items: roadKeys().map((road) => ({
-				value: road,
-				label: store.roads[road].name,
-			})),
+			items:
+				props.roadKeys?.map((road) => ({
+					value: road,
+					label: roads()?.[road]?.name,
+				})) ?? [],
 		}),
 	);
 
 	return (
 		<>
 			<Tabs.Root
-				value={store.activeRoad}
+				value={activeRoad()}
 				onValueChange={(e) => setActiveRoad(e.value)}
 			>
 				<Tabs.List>
-					<For each={roadKeys()} fallback={null}>
+					<For each={props.roadKeys} fallback={null}>
 						{(roadId) => (
 							<Tabs.Trigger
 								value={roadId}
 								onClick={() => setActiveRoad(roadId)}
 							>
-								{store.roads[roadId].name}
-								<Show when={store.activeRoad === roadId} fallback={null}>
+								{roads()?.[roadId]?.name}
+								<Show when={activeRoad() === roadId} fallback={null}>
 									<IconButton
 										variant="link"
 										onClick={() => {
-											setNewRoadName(store.roads[roadId].name);
+											setNewRoadName(roads()?.[roadId]?.name);
 											setEditDialog(true);
 										}}
 									>
@@ -200,7 +201,7 @@ const RoadTabs: Component<{
 								</Button>
 								<Button
 									onClick={renameRoad}
-									disabled={otherRoadHasName(store.activeRoad, newRoadName())}
+									disabled={otherRoadHasName(activeRoad(), newRoadName())}
 								>
 									Submit
 								</Button>
@@ -235,7 +236,7 @@ const RoadTabs: Component<{
 						<Stack gap="8" p="6">
 							<Stack gap="1">
 								<Dialog.Title>
-									Permanently Delete {store.roads[store.activeRoad].name}?
+									Permanently Delete {roads()?.[activeRoad()]?.name}?
 								</Dialog.Title>
 								<Dialog.Description>
 									This action cannot be undone.
@@ -261,7 +262,7 @@ const RoadTabs: Component<{
 									colorPalette="red"
 									onClick={() => {
 										setDeleteDialog(false);
-										props.deleteRoad(store.activeRoad);
+										props.deleteRoad(activeRoad());
 										setNewRoadName("");
 									}}
 								>

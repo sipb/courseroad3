@@ -25,12 +25,22 @@ export async function GET({ params }: APIEvent) {
 		return new Response("User is not a student", { status: 400 });
 	}
 
-	const year: string = data.item.affiliations[0].classYear;
+	const year: string | null = data.item.affiliations[0].classYear;
+	// console.log(data.item.affiliations[0]);
 
 	if (year === "G") {
 		return new Response("User is a graduate student", { status: 400 });
 	}
 
+	if (year === null) {
+		return new Response("Could not get user year", { status: 400 });
+	}
+
 	const yearNumber = Number.parseInt(year, 10) - 1;
+
+	if (Number.isNaN(yearNumber)) {
+		return new Response("Could not parse user year", { status: 400 });
+	}
+
 	return new Response(yearNumber.toString(), { status: 200 });
 }

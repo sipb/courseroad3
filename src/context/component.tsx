@@ -1,17 +1,23 @@
 import { makePersisted, storageSync } from "@solid-primitives/storage";
-import type { ParentComponent } from "solid-js";
-import { createStore, produce, reconcile } from "solid-js/store";
+import { type ParentComponent, createResource } from "solid-js";
+import { createStore, produce, reconcile, unwrap } from "solid-js/store";
 
 import { CourseDataContext, type defaultActions, defaultState } from "./create";
 import type { Subject, SubjectFull } from "./types";
 
 const CourseDataProvider: ParentComponent = (props) => {
-	const [store, setStore] = makePersisted(createStore(defaultState), {
-		name: "courseRoadStore",
-		sync: storageSync,
-	});
+	const [store, setStore, init] = makePersisted(
+		createStore(structuredClone(defaultState)),
+		{
+			name: "courseRoadStore",
+			sync: storageSync,
+		},
+	);
+
+	createResource(() => init)[0]();
 
 	const actions = {
+		setStore,
 		resetState: () => {
 			setStore(reconcile(defaultState));
 		},
@@ -155,8 +161,21 @@ const CourseDataProvider: ParentComponent = (props) => {
 		overrideWarnings: (payload) => {},
 		setPASubstitutions: ({ uniqueKey, newReqs }) => {},
 		setPAIgnore: ({ uniqueKey, isIgnored }) => {},
-		setUnretrieved: (roadIDs) => {},
-		setRetrieved: (roadID) => {},
+		setUnretrieved: (roadIDs) => {
+			setStore("unretrieved", reconcile(roadIDs));
+		},
+		setRetrieved: (roadID) => {
+			setStore(
+				"unretrieved",
+				produce((unretrieved) => {
+					const roadIDIndex = unretrieved.indexOf(roadID);
+
+					if (roadIDIndex >= 0) {
+						unretrieved.splice(roadIDIndex, 1);
+					}
+				}),
+			);
+		},
 		parseGenericCourses: () => {},
 		parseGenericIndex: () => {},
 		parseSubjectsIndex: () => {},
@@ -170,7 +189,9 @@ const CourseDataProvider: ParentComponent = (props) => {
 			setStore("activeRoad", activeRoad);
 		},
 		setFullSubjectsInfoLoaded: (isFull) => {},
-		setLoggedIn: (newLoggedIn) => {},
+		setLoggedIn: (newLoggedIn) => {
+			setStore("loggedIn", newLoggedIn);
+		},
 		setHideIAP: (value) => {},
 		setRoadProp: ({ id, prop, value, ignoreSet }) => {},
 		setRoad: ({ id, road, ignoreSet }) => {
@@ -187,15 +208,30 @@ const CourseDataProvider: ParentComponent = (props) => {
 				}),
 			);
 		},
-		setRoads: (roads) => {},
-		setRoadName: ({ id, name }) => {},
+		setRoads: (roads) => {
+			setStore("roads", reconcile(roads));
+		},
+		setRoadName: ({ id, name }) => {
+			setStore(
+				"roads",
+				produce((roads) => {
+					roads[id].name = name;
+					roads[id].changed = new Date().toISOString();
+				}),
+			);
+		},
 		setSubjectsInfo: (data) => {},
-		setCurrentSemester: (sem) => {},
+		setCurrentSemester: (sem) => {
+			setStore("currentSemester", Math.max(1, sem));
+		},
 		updateProgress: (progress) => {},
 		// setFromLocalStorage: (localStore) => {},
 		updateRoad: (id, road) => {},
 		watchRoadChanges: () => {},
-		resetFulfillmentNeeded: () => {},
+		// Reset fulfillment needed to default of all
+		resetFulfillmentNeeded: () => {
+			setStore("fulfillmentNeeded", "all");
+		},
 		setLoadSubjectsPromise: (promise) => {},
 		setSubjectsLoaded: () => {},
 		queueRoadMigration: (roadID) => {},
@@ -204,6 +240,61 @@ const CourseDataProvider: ParentComponent = (props) => {
 		addAtPlaceholder: (index) => {},
 		waitLoadSubjects: async () => {},
 		waitAndMigrateOldSubjects: (roadID) => {},
+
+		getUserYear: () => {
+			return Math.floor((store.currentSemester - 1) / 3);
+		},
+
+		getRoadKeys: () => {
+			if (!store.roads) return [];
+			return Object.keys(store.roads);
+		},
+
+		getMatchingAttributes: (gir, hass, ci) => {
+			const matchingClasses = store.subjectsInfo.filter((subject) => {
+				if (gir !== undefined && subject.gir_attribute !== gir) {
+					return false;
+				}
+				if (hass !== undefined && subject.hass_attribute !== hass) {
+					return false;
+				}
+				return !(ci !== undefined && subject.communication_requirement !== ci);
+			});
+
+			const totalObject = matchingClasses.reduce(
+				(accumObject, nextClass) => {
+					return {
+						offered_spring:
+							accumObject.offered_spring || nextClass.offered_spring,
+						offered_summer:
+							accumObject.offered_summer || nextClass.offered_summer,
+						offered_IAP: accumObject.offered_IAP || nextClass.offered_IAP,
+						offered_fall: accumObject.offered_fall || nextClass.offered_fall,
+						in_class_hours:
+							accumObject.in_class_hours +
+							(nextClass.in_class_hours !== undefined
+								? nextClass.in_class_hours
+								: 0),
+						out_of_class_hours:
+							accumObject.out_of_class_hours +
+							(nextClass.out_of_class_hours !== undefined
+								? nextClass.out_of_class_hours
+								: 0),
+					};
+				},
+				{
+					offered_spring: false,
+					offered_summer: false,
+					offered_IAP: false,
+					offered_fall: false,
+					in_class_hours: 0,
+					out_of_class_hours: 0,
+				},
+			);
+			totalObject.in_class_hours /= matchingClasses.length;
+			totalObject.out_of_class_hours /= matchingClasses.length;
+			return totalObject;
+		},
 	} satisfies typeof defaultActions;
 
 	return (

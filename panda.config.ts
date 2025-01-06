@@ -74,10 +74,6 @@ export default defineConfig({
 				minHeight: "100%",
 				// colorPalette: "accent",
 			},
-			"html, body": {
-				display: "flex",
-				flexDirection: "column",
-			},
 			body: {
 				display: "flex",
 				flexDirection: "column",

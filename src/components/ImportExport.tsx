@@ -1,7 +1,11 @@
 import { type Component, For, Show, createSignal } from "solid-js";
 
 import { useCourseDataContext } from "~/context/create";
-import type { SimplifiedSelectedSubjects, Subject } from "~/context/types";
+import type {
+	SimplifiedSelectedSubjects,
+	Subject,
+	SubjectWithId,
+} from "~/context/types";
 
 import { flatten } from "~/lib/browserSupport";
 import { getSimpleSelectedSubjects } from "~/lib/sanitizeSubjects";
@@ -121,9 +125,6 @@ const ImportExport: Component<{
 				}
 
 				// subject_id issue
-				interface SubjectWithId extends Subject {
-					id?: string;
-				}
 				const newss = obj.selectedSubjects.map((s: SubjectWithId) => {
 					if (s.id) {
 						s.subject_id = s.id;

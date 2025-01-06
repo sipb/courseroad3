@@ -1,6 +1,7 @@
 // @ts-nocheck
-// TODO: remove nocheck once defaultAction is fully types
+// TODO: remove nocheck once defaultAction is fully typed
 import { createContext, useContext } from "solid-js";
+import type { SetStoreFunction } from "solid-js/store";
 import type {
 	CustomSubject,
 	Road,
@@ -15,7 +16,7 @@ export const defaultState = {
 	activeRoad: "$defaultroad$" as string,
 	addingFromCard: false,
 	classInfoStack: [] as string[],
-	cookiesAllowed: undefined as undefined | boolean,
+	cookiesAllowed: false,
 	customClassEditing: undefined as undefined | CustomSubject,
 	fullSubjectsInfoLoaded: false,
 	genericCourses: [] as SubjectFull[],
@@ -50,65 +51,10 @@ export const defaultState = {
 	loadSubjectsPromise: undefined as Promise<SubjectFull[]> | undefined,
 	subjectsLoaded: false,
 	roadsToMigrate: [] as string[],
-
-	// getters
-	get userYear() {
-		return Math.floor((this.currentSemester - 1) / 3);
-	},
-
-	get roadKeys() {
-		if (!this.roads) return [];
-		return Object.keys(this.roads);
-	},
-
-	getMatchingAttributes(gir?: string, hass?: string, ci?: string) {
-		const matchingClasses = this.subjectsInfo.filter((subject) => {
-			if (gir !== undefined && subject.gir_attribute !== gir) {
-				return false;
-			}
-			if (hass !== undefined && subject.hass_attribute !== hass) {
-				return false;
-			}
-			return !(ci !== undefined && subject.communication_requirement !== ci);
-		});
-
-		const totalObject = matchingClasses.reduce(
-			(accumObject, nextClass) => {
-				return {
-					offered_spring:
-						accumObject.offered_spring || nextClass.offered_spring,
-					offered_summer:
-						accumObject.offered_summer || nextClass.offered_summer,
-					offered_IAP: accumObject.offered_IAP || nextClass.offered_IAP,
-					offered_fall: accumObject.offered_fall || nextClass.offered_fall,
-					in_class_hours:
-						accumObject.in_class_hours +
-						(nextClass.in_class_hours !== undefined
-							? nextClass.in_class_hours
-							: 0),
-					out_of_class_hours:
-						accumObject.out_of_class_hours +
-						(nextClass.out_of_class_hours !== undefined
-							? nextClass.out_of_class_hours
-							: 0),
-				};
-			},
-			{
-				offered_spring: false,
-				offered_summer: false,
-				offered_IAP: false,
-				offered_fall: false,
-				in_class_hours: 0,
-				out_of_class_hours: 0,
-			},
-		);
-		totalObject.in_class_hours /= matchingClasses.length;
-		totalObject.out_of_class_hours /= matchingClasses.length;
-		return totalObject;
-	},
 };
 
 export const defaultActions = {
+	setStore: (() => {}) as SetStoreFunction<typeof defaultState>,
 	resetState: () => {},
 	addClass: (newClass: SelectedSubjects) => {},
 	addFromCard: (newClass: SubjectFull) => {},
@@ -180,6 +126,19 @@ export const defaultActions = {
 	addAtPlaceholder: (index: number) => {},
 	waitLoadSubjects: async () => {},
 	waitAndMigrateOldSubjects: (roadID: string) => {},
+
+	// getters
+	getUserYear: () => {
+		return 0;
+	},
+
+	getRoadKeys: () => {
+		return [] as string[];
+	},
+
+	getMatchingAttributes(gir?: string, hass?: string, ci?: string) {
+		return {};
+	},
 };
 
 export const CourseDataContext = createContext<
