@@ -14,15 +14,16 @@ import { createStore } from "solid-js/store";
 import { useCourseDataContext } from "~/context/create";
 import type { SimplifiedSelectedSubjects } from "~/context/types";
 
+import { css } from "styled-system/css";
 import { Flex } from "styled-system/jsx";
-import About from "~/components/About";
 import Auth, { type AuthRef } from "~/components/Auth";
 import ImportExport from "~/components/ImportExport";
 import Road from "~/components/Road";
 import RoadTabs from "~/components/RoadTabs";
-import ThemeToggler from "~/components/ThemeToggler";
 import NavbarContainer from "~/components/layout/NavbarContainer";
+import Sidebar from "~/components/layout/Sidebar";
 import SidebarContainer from "~/components/layout/SidebarContainer";
+import SidebarDrawer from "~/components/layout/SidebarDrawer";
 import { recipe as layoutRecipe } from "~/components/layout/layout.recipe";
 import { Input } from "~/components/ui/input";
 import { Tabs } from "~/components/ui/tabs";
@@ -171,8 +172,7 @@ export default function RoadPage() {
 		<>
 			<Flex>
 				<SidebarContainer class={styles.aside}>
-					<About />
-					<ThemeToggler />
+					<Sidebar />
 				</SidebarContainer>
 				<main class={styles.main}>
 					<Tabs.Root
@@ -192,7 +192,12 @@ export default function RoadPage() {
 									ref={authComponentRef}
 								/>
 								<div>
-									<Input placeholder="Add classes" width={"30ch"} />
+									<Input
+										placeholder="Add classes"
+										class={css({ width: { base: 32, md: 40, lg: 52 } })}
+										me={2}
+									/>
+									<SidebarDrawer />
 								</div>
 							</Flex>
 							<Flex flexDirection="row" justifyContent="space-between">

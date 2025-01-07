@@ -20,6 +20,7 @@ import {
 } from "lucide-solid";
 import { sva } from "styled-system/css";
 import { Stack } from "styled-system/jsx";
+import ResponsiveButton from "~/components/layout/ResponsiveButton";
 import { Alert } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import { Dialog } from "~/components/ui/dialog";
@@ -213,10 +214,13 @@ const ImportExport: Component<{
 
 	return (
 		<div>
-			<Button variant="outline" class={styles.export} onClick={exportRoad}>
-				Export
-				<DownloadIcon />
-			</Button>
+			<ResponsiveButton
+				variant="outline"
+				class={styles.export}
+				text="Export"
+				icon={<DownloadIcon />}
+				onClick={exportRoad}
+			/>
 			<Dialog.Root
 				lazyMount
 				open={dialog()}
@@ -224,10 +228,13 @@ const ImportExport: Component<{
 			>
 				<Dialog.Trigger
 					asChild={(triggerProps) => (
-						<Button variant="outline" class={styles.import} {...triggerProps()}>
-							Import
-							<UploadIcon />
-						</Button>
+						<ResponsiveButton
+							variant="outline"
+							class={styles.import}
+							text="Import"
+							icon={<UploadIcon />}
+							{...triggerProps()}
+						/>
 					)}
 				/>
 				<Dialog.Backdrop />

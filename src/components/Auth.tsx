@@ -20,7 +20,7 @@ import {
 	TriangleAlertIcon,
 } from "lucide-solid";
 import { Flex } from "styled-system/jsx";
-import { Button } from "~/components/ui/button";
+import ResponsiveButton from "~/components/layout/ResponsiveButton";
 import { Icon } from "~/components/ui/icon";
 import { Tooltip } from "~/components/ui/tooltip";
 
@@ -872,21 +872,24 @@ const Auth: Component<{
 			<Show
 				when={!loggedIn()}
 				fallback={
-					<Button variant="outline" onClick={logoutUser}>
-						Logout <LogOutIcon />
-					</Button>
+					<ResponsiveButton
+						variant="outline"
+						onClick={logoutUser}
+						text="Logout"
+						icon={<LogOutIcon />}
+					/>
 				}
 			>
-				<Button
+				<ResponsiveButton
 					variant="outline"
 					onClick={() => {
 						// TODO: idk if this is the right thing to do? idk...
 						allowCookies();
 						loginUser();
 					}}
-				>
-					Login <LogInIcon />
-				</Button>
+					text="Login"
+					icon={<LogInIcon />}
+				/>
 			</Show>
 			<Tooltip.Root>
 				<Tooltip.Trigger>

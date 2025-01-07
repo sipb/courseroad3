@@ -1,9 +1,8 @@
 import type { Component } from "solid-js";
 
-import { XIcon } from "lucide-solid";
+import { InfoIcon, XIcon } from "lucide-solid";
 import { Portal } from "solid-js/web";
 import { Stack } from "styled-system/jsx";
-import { Button } from "~/components/ui/button";
 import { Dialog } from "~/components/ui/dialog";
 import { IconButton } from "~/components/ui/icon-button";
 
@@ -12,9 +11,9 @@ const About: Component<Dialog.RootProps> = (props) => {
 		<Dialog.Root lazyMount unmountOnExit {...props}>
 			<Dialog.Trigger
 				asChild={(triggerProps) => (
-					<Button variant="link" {...triggerProps()}>
-						About CourseRoad
-					</Button>
+					<IconButton variant="ghost" {...triggerProps()}>
+						<InfoIcon />
+					</IconButton>
 				)}
 			/>
 			<Portal>

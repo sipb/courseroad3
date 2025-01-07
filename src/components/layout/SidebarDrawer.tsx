@@ -1,0 +1,54 @@
+import { MenuIcon, XIcon } from "lucide-solid";
+import type { Component } from "solid-js";
+import Sidebar, {
+	SidebarProbelmsEmail,
+	SidebarWarningText,
+} from "~/components/layout/Sidebar";
+import { Drawer } from "~/components/ui/drawer";
+import { IconButton } from "~/components/ui/icon-button";
+
+const SidebarDialog: Component<Drawer.RootProps> = (props) => {
+	return (
+		<Drawer.Root lazyMount unmountOnExit variant="left" {...props}>
+			<Drawer.Trigger
+				asChild={(triggerProps) => (
+					<IconButton {...triggerProps()} hideFrom="md" variant="outline">
+						<MenuIcon />
+					</IconButton>
+				)}
+			/>
+			<Drawer.Backdrop />
+			<Drawer.Positioner>
+				<Drawer.Content>
+					<Drawer.Header>
+						<Drawer.Title>Courseroad</Drawer.Title>
+						<Drawer.Description>
+							<SidebarWarningText />
+						</Drawer.Description>
+						<Drawer.CloseTrigger
+							asChild={(closeProps) => (
+								<IconButton
+									{...closeProps()}
+									variant="ghost"
+									position="absolute"
+									top={3}
+									right={4}
+								>
+									<XIcon />
+								</IconButton>
+							)}
+						/>
+					</Drawer.Header>
+					<Drawer.Body>
+						<Sidebar />
+					</Drawer.Body>
+					<Drawer.Footer gap="3">
+						<SidebarProbelmsEmail />
+					</Drawer.Footer>
+				</Drawer.Content>
+			</Drawer.Positioner>
+		</Drawer.Root>
+	);
+};
+
+export default SidebarDialog;
