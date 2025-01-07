@@ -73,7 +73,6 @@ const Auth: Component<{
 	conflict: (conflictInfo: Conflict) => void;
 	resolveConflict: () => void;
 }> = (props) => {
-	const finalProps = mergeProps({ conflictInfo: {} }, props);
 	const [
 		store,
 		{

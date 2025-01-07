@@ -8,7 +8,6 @@ import Semester from "~/components/Semester";
 import { Accordion } from "~/components/ui/accordion";
 import { IconButton } from "~/components/ui/icon-button";
 
-import { useCourseDataContext } from "~/context/create";
 import type { SimplifiedSelectedSubjects } from "~/context/types";
 
 const Road: Component<{
@@ -50,13 +49,13 @@ const Road: Component<{
 	return (
 		<Accordion.RootProvider lazyMount unmountOnExit value={accordion}>
 			<Index each={[...Array(numSems()).keys()]}>
-				{(item) => (
+				{(index) => (
 					<Semester
-						index={item()}
+						index={index()}
 						selectedSubjects={props.selectedSubjects}
-						semesterSubjects={props.selectedSubjects[item()]}
+						semesterSubjects={props.selectedSubjects[index()]}
 						roadID={props.roadID}
-						isOpen={visibleList().includes(`${item()}`)}
+						isOpen={visibleList().includes(index().toString())}
 					/>
 				)}
 			</Index>

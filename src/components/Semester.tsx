@@ -19,7 +19,7 @@ const Semester: Component<{
 	const [store, { getUserYear }] = useCourseDataContext();
 
 	const baseYear = createMemo(() => {
-		const today = new Date(Date.now());
+		const today = new Date();
 		const currentYear = today.getFullYear();
 		const baseYear = today.getMonth() >= 5 ? currentYear + 1 : currentYear;
 		return baseYear - getUserYear();
@@ -31,7 +31,7 @@ const Semester: Component<{
 			"Junior",
 			"Senior",
 			"Fifth Year",
-		];
+		] as const;
 		if (props.index === 0) {
 			return "";
 		}
@@ -46,24 +46,29 @@ const Semester: Component<{
 	const semesterType = createMemo(() => {
 		return props.index === 0
 			? "Prior Credit"
-			: ["Fall", "IAP", "Spring"][(props.index - 1) % 3];
+			: (["Fall", "IAP", "Spring"] as const)[(props.index - 1) % 3];
+	});
+	const semesterYearRendered = createMemo(() => {
+		return props.index > 0 && semesterYear()
+			? `'${semesterYear().toString().substring(2)}`
+			: "";
 	});
 
 	return (
-		<Show when={!store.hideIAP || semesterType() !== "IAP"}>
-			<Accordion.Item value={props.index.toString()}>
-				<Accordion.ItemTrigger>
-					{semesterYearName()} {semesterType()}{" "}
-					{props.index > 0 ? `'${semesterYear().toString().substring(2)}` : ""}
-					<Accordion.ItemIndicator>
-						<ChevronDownIcon />
-					</Accordion.ItemIndicator>
-				</Accordion.ItemTrigger>
-				<Accordion.ItemContent>
-					Showing semester {props.index} for {props.roadID}
-				</Accordion.ItemContent>
-			</Accordion.Item>
-		</Show>
+		<Accordion.Item
+			value={props.index.toString()}
+			hidden={store.hideIAP && semesterType() === "IAP"}
+		>
+			<Accordion.ItemTrigger>
+				{semesterYearName()} {semesterType()} {semesterYearRendered()}
+				<Accordion.ItemIndicator>
+					<ChevronDownIcon />
+				</Accordion.ItemIndicator>
+			</Accordion.ItemTrigger>
+			<Accordion.ItemContent>
+				Showing semester {props.index} for {props.roadID}
+			</Accordion.ItemContent>
+		</Accordion.Item>
 	);
 };
 

@@ -22,7 +22,7 @@ const SidebarDialog: ParentComponent<Drawer.RootProps> = (props) => {
 			<Drawer.Positioner>
 				<Drawer.Content>
 					<Drawer.Header>
-						<Drawer.Title>Courseroad</Drawer.Title>
+						<Drawer.Title>CourseRoad</Drawer.Title>
 						<Drawer.Description>
 							<SidebarWarningText />
 						</Drawer.Description>
