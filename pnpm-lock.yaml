@@ -36,8 +36,11 @@ importers:
         specifier: ^0.15.2
         version: 0.15.2(solid-js@1.9.3)
       '@solidjs/start':
-        specifier: ^1.0.10
-        version: 1.0.10(@testing-library/jest-dom@6.6.3)(solid-js@1.9.3)(vinxi@0.4.3(@types/node@22.10.5)(db0@0.2.1)(ioredis@5.4.2)(lightningcss@1.25.1)(terser@5.37.0)(typescript@5.7.2))(vite@5.4.11(@types/node@22.10.5)(lightningcss@1.25.1)(terser@5.37.0))
+        specifier: ^1.0.11
+        version: 1.0.11(@testing-library/jest-dom@6.6.3)(solid-js@1.9.3)(vinxi@0.4.3(@types/node@22.10.5)(db0@0.2.1)(ioredis@5.4.2)(lightningcss@1.25.1)(terser@5.37.0)(typescript@5.7.2))(vite@5.4.11(@types/node@22.10.5)(lightningcss@1.25.1)(terser@5.37.0))
+      localforage:
+        specifier: ^1.10.0
+        version: 1.10.0
       lucide-solid:
         specifier: ^0.469.0
         version: 0.469.0(solid-js@1.9.3)
@@ -1241,8 +1244,8 @@ packages:
     peerDependencies:
       solid-js: ^1.8.6
 
-  '@solidjs/start@1.0.10':
-    resolution: {integrity: sha512-3yg4KraSxc4rXs9dy/3kkqjDhU0JCPsZFLmDl5n6hHRPwtLLac6WUhs2k5VxGzitHaaJM/ZQCfT7i544Mf+4tw==}
+  '@solidjs/start@1.0.11':
+    resolution: {integrity: sha512-ZkrHtwxnmaVGItah13BtmST6rh3PtATcj0RyXM19Shj6MK/cIpDBBsDTsgwqCbZoa/AT8/JLM5xUHFjQyBjRCA==}
 
   '@solidjs/testing-library@0.8.10':
     resolution: {integrity: sha512-qdeuIerwyq7oQTIrrKvV0aL9aFeuwTd86VYD3afdq5HYEwoox1OBTJy4y8A3TFZr8oAR0nujYgCzY/8wgHGfeQ==}
@@ -2699,6 +2702,9 @@ packages:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
 
+  immediate@3.0.6:
+    resolution: {integrity: sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==}
+
   import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -2901,6 +2907,9 @@ packages:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
 
+  lie@3.1.1:
+    resolution: {integrity: sha512-RiNhHysUjhrDQntfYSfY4MU24coXXdEOgw9WGcKHNeEwffDYbF//u87M1EWaMGzuFoSbqW0C9C6lEEhDOAswfw==}
+
   lightningcss-darwin-arm64@1.25.1:
     resolution: {integrity: sha512-G4Dcvv85bs5NLENcu/s1f7ehzE3D5ThnlWSDwE190tWXRQCQaqwcuHe+MGSVI/slm0XrxnaayXY+cNl3cSricw==}
     engines: {node: '>= 12.0.0'}
@@ -2966,6 +2975,9 @@ packages:
   local-pkg@0.5.1:
     resolution: {integrity: sha512-9rrA30MRRP3gBD3HTGnC6cDFpaE1kVDWxWgqWJUN0RvDNAo+Nz/9GxB+nHOH0ifbVFy0hSA1V6vFDvnx54lTEQ==}
     engines: {node: '>=14'}
+
+  localforage@1.10.0:
+    resolution: {integrity: sha512-14/H1aX7hzBBmmh7sGPd+AOMkkIrHM3Z1PAyGgZigA1H1p5O5ANnMyWzvpAETtG68/dC4pC0ncy3+PPGzXZHPg==}
 
   locate-path@6.0.0:
     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==}
@@ -5332,7 +5344,7 @@ snapshots:
     dependencies:
       solid-js: 1.9.3
 
-  '@solidjs/start@1.0.10(@testing-library/jest-dom@6.6.3)(solid-js@1.9.3)(vinxi@0.4.3(@types/node@22.10.5)(db0@0.2.1)(ioredis@5.4.2)(lightningcss@1.25.1)(terser@5.37.0)(typescript@5.7.2))(vite@5.4.11(@types/node@22.10.5)(lightningcss@1.25.1)(terser@5.37.0))':
+  '@solidjs/start@1.0.11(@testing-library/jest-dom@6.6.3)(solid-js@1.9.3)(vinxi@0.4.3(@types/node@22.10.5)(db0@0.2.1)(ioredis@5.4.2)(lightningcss@1.25.1)(terser@5.37.0)(typescript@5.7.2))(vite@5.4.11(@types/node@22.10.5)(lightningcss@1.25.1)(terser@5.37.0))':
     dependencies:
       '@vinxi/plugin-directives': 0.4.3(vinxi@0.4.3(@types/node@22.10.5)(db0@0.2.1)(ioredis@5.4.2)(lightningcss@1.25.1)(terser@5.37.0)(typescript@5.7.2))
       '@vinxi/server-components': 0.4.3(vinxi@0.4.3(@types/node@22.10.5)(db0@0.2.1)(ioredis@5.4.2)(lightningcss@1.25.1)(terser@5.37.0)(typescript@5.7.2))
@@ -7540,6 +7552,8 @@ snapshots:
 
   ignore@5.3.2: {}
 
+  immediate@3.0.6: {}
+
   import-fresh@3.3.0:
     dependencies:
       parent-module: 1.0.1
@@ -7723,6 +7737,10 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
 
+  lie@3.1.1:
+    dependencies:
+      immediate: 3.0.6
+
   lightningcss-darwin-arm64@1.25.1:
     optional: true
 
@@ -7789,6 +7807,10 @@ snapshots:
     dependencies:
       mlly: 1.7.3
       pkg-types: 1.3.0
+
+  localforage@1.10.0:
+    dependencies:
+      lie: 3.1.1
 
   locate-path@6.0.0:
     dependencies:

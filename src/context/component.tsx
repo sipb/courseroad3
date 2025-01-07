@@ -1,16 +1,23 @@
-import { makePersisted, storageSync } from "@solid-primitives/storage";
+import { makePersisted } from "@solid-primitives/storage";
 import { type ParentComponent, createResource } from "solid-js";
-import { createStore, produce, reconcile, unwrap } from "solid-js/store";
+import { createStore, produce, reconcile } from "solid-js/store";
+import { isServer } from "solid-js/web";
 
-import { CourseDataContext, type defaultActions, defaultState } from "./create";
-import type { Subject, SubjectFull } from "./types";
+import localforage from "localforage";
+
+import {
+	CourseDataContext,
+	type defaultActions,
+	defaultState,
+} from "~/context/create";
+import type { Subject, SubjectFull } from "~/context/types";
 
 const CourseDataProvider: ParentComponent = (props) => {
 	const [store, setStore, init] = makePersisted(
 		createStore(structuredClone(defaultState)),
 		{
 			name: "courseRoadStore",
-			sync: storageSync,
+			storage: !isServer ? localforage : undefined,
 		},
 	);
 
@@ -248,8 +255,7 @@ const CourseDataProvider: ParentComponent = (props) => {
 		},
 
 		getRoadKeys: () => {
-			if (!store.roads) return [];
-			return Object.keys(store.roads);
+			return Object.getOwnPropertyNames(store.roads);
 		},
 
 		getMatchingAttributes: (gir, hass, ci) => {

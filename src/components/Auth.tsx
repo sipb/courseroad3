@@ -1,8 +1,10 @@
 import { cookieStorage, makePersisted } from "@solid-primitives/storage";
 import { useNavigate, useParams, useSearchParams } from "@solidjs/router";
 import {
+	type Accessor,
 	type Component,
 	For,
+	type Setter,
 	Show,
 	createEffect,
 	createMemo,
@@ -49,18 +51,18 @@ export type AuthRef = {
 	(props: {
 		deleteRoad: (roadName: string) => void;
 		retrieveRoad: (roadID: string) => Promise<RoadResponse | undefined>;
-		newRoads: string[];
-		setNewRoads: (newRoads: string[]) => void;
+		newRoads: Accessor<string[]>;
+		setNewRoads: Setter<string[]>;
 		save: (roadID: string) => void;
-		gettingUserData: boolean;
+		gettingUserData: Accessor<boolean>;
 		changeSemester: (year: number) => void;
 	}): void;
 	deleteRoad: (roadName: string) => void;
 	retrieveRoad: (roadID: string) => Promise<RoadResponse | undefined>;
-	newRoads: string[];
-	setNewRoads: (newRoads: string[]) => void;
+	newRoads: Accessor<string[]>;
+	setNewRoads: Setter<string[]>;
 	save: (roadID: string) => void;
-	gettingUserData: boolean;
+	gettingUserData: Accessor<boolean>;
 	changeSemester: (year: number) => void;
 };
 
@@ -860,8 +862,8 @@ const Auth: Component<{
 	props.ref?.({
 		deleteRoad: deleteRoadInternal,
 		retrieveRoad,
-		newRoads: newRoadsRef(),
-		gettingUserData: gettingUserData(),
+		newRoads: newRoadsRef,
+		gettingUserData,
 		setNewRoads: setNewRoadsRef,
 		save,
 		changeSemester,

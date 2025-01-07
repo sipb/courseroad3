@@ -82,7 +82,7 @@ export default function RoadPage() {
 		on(activeRoad, (newRoad) => {
 			if (
 				store.unretrieved.indexOf(newRoad) >= 0 &&
-				!authComponentRef?.gettingUserData
+				!authComponentRef?.gettingUserData()
 			) {
 				authComponentRef?.retrieveRoad(newRoad).then(() => {
 					setRetrieved(newRoad);
@@ -130,7 +130,7 @@ export default function RoadPage() {
 		ss: SimplifiedSelectedSubjects = Array.from(Array(16), () => []),
 		overrides: Record<string, number> = {},
 	) => {
-		const tempRoadID = `$${authComponentRef?.newRoads.length}$`;
+		const tempRoadID = `$${authComponentRef?.newRoads().length}$`;
 		const newContents = {
 			coursesOfStudy: cos,
 			selectedSubjects: ss,
@@ -152,10 +152,14 @@ export default function RoadPage() {
 		});
 		resetFulfillmentNeeded();
 		setActiveRoad(tempRoadID);
-		authComponentRef?.setNewRoads([...authComponentRef.newRoads, tempRoadID]);
+		console.log(authComponentRef?.newRoads());
+		authComponentRef?.setNewRoads([...authComponentRef.newRoads(), tempRoadID]);
+		console.log(authComponentRef?.newRoads());
 	};
 
-	const [roadKeys, setRoadKeys] = createSignal(["$defaultroad$"] as string[]);
+	// TODO: find a way to make this nicer,
+	// but creatememo doesnt work for some reason...
+	const [roadKeys, setRoadKeys] = createSignal(["$defaultroad$"]);
 	createEffect(() => {
 		setRoadKeys(getRoadKeys());
 	});
