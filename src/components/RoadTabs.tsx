@@ -1,6 +1,5 @@
 import {
 	type Component,
-	ErrorBoundary,
 	For,
 	Show,
 	createEffect,
@@ -39,7 +38,7 @@ const RoadTabs: Component<{
 	retrieve: (roadName: string) => void;
 	roadKeys?: string[];
 }> = (props) => {
-	const [store, { setRoadName, setActiveRoad }] = useCourseDataContext();
+	const [store, { setRoadName }] = useCourseDataContext();
 
 	const [addDialog, setAddDialog] = createSignal(false);
 	const [deleteDialog, setDeleteDialog] = createSignal(false);
@@ -126,7 +125,7 @@ const RoadTabs: Component<{
 
 	return (
 		<>
-			<Tabs.List flexGrow={1}>
+			<Tabs.List maxW="full">
 				<For each={props.roadKeys} fallback={null}>
 					{(roadId) => (
 						<Tabs.Trigger value={roadId}>
@@ -134,6 +133,7 @@ const RoadTabs: Component<{
 							<Show when={activeRoad() === roadId} fallback={null}>
 								<IconButton
 									variant="link"
+									aria-label={`Edit ${roads()?.[roadId]?.name}`}
 									onClick={() => {
 										setNewRoadName(roads()?.[roadId]?.name);
 										setEditDialog(true);

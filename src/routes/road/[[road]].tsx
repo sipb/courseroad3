@@ -172,7 +172,7 @@ export default function RoadPage() {
 		<>
 			<Flex>
 				<SidebarContainer class={styles.aside}>
-					<Sidebar />
+					<Sidebar changeYear={(e) => authComponentRef?.changeSemester(e)} />
 				</SidebarContainer>
 				<main class={styles.main}>
 					<Tabs.Root
@@ -197,17 +197,19 @@ export default function RoadPage() {
 										class={css({ width: { base: 32, md: 40, lg: 52 } })}
 										me={2}
 									/>
-									<SidebarDrawer />
+									<SidebarDrawer>
+										<Sidebar
+											changeYear={(e) => authComponentRef?.changeSemester(e)}
+										/>
+									</SidebarDrawer>
 								</div>
 							</Flex>
-							<Flex flexDirection="row" justifyContent="space-between">
-								<RoadTabs
-									addRoad={addRoad}
-									deleteRoad={(e) => authComponentRef?.deleteRoad(e)}
-									retrieve={(e) => authComponentRef?.retrieveRoad(e)}
-									roadKeys={roadKeys()}
-								/>
-							</Flex>
+							<RoadTabs
+								addRoad={addRoad}
+								deleteRoad={(e) => authComponentRef?.deleteRoad(e)}
+								retrieve={(e) => authComponentRef?.retrieveRoad(e)}
+								roadKeys={roadKeys()}
+							/>
 						</NavbarContainer>
 						<For each={roadKeys()} fallback={null}>
 							{(roadId) => (
@@ -219,7 +221,7 @@ export default function RoadPage() {
 										dragSemesterNum={
 											activeRoad() === roadId ? dragSemesterNum() : -1
 										}
-										changeYear={(e) => authComponentRef?.changeSemester(e)}
+										// changeYear={(e) => authComponentRef?.changeSemester(e)}
 									/>
 								</Tabs.Content>
 							)}

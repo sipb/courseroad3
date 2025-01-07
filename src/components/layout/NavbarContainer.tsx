@@ -1,7 +1,7 @@
 import type { ParentComponent } from "solid-js";
-import { type BoxProps, Container, Flex } from "styled-system/jsx";
+import { Flex, type FlexProps } from "styled-system/jsx";
 
-const NavbarContainer: ParentComponent = (props) => {
+const NavbarContainer: ParentComponent<FlexProps> = (props) => {
 	return (
 		<Flex
 			flexDir="column"

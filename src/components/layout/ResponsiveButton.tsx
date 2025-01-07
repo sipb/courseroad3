@@ -25,6 +25,7 @@ const ResponsiveButton: Component<ResponsiveButtonProps> = (props) => {
 			</Button>
 			<IconButton
 				class={`${css({ hideFrom: "md" })} ${local.class}`}
+				aria-label={local.text}
 				{...others}
 			>
 				{local.icon}

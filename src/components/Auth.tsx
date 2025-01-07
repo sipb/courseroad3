@@ -892,14 +892,17 @@ const Auth: Component<{
 				/>
 			</Show>
 			<Tooltip.Root>
-				<Tooltip.Trigger>
-					<Icon
-						color={saveColor()}
-						asChild={(childProps) => (
-							<Dynamic {...childProps} component={SaveIconComponent()} />
-						)}
-					/>
-				</Tooltip.Trigger>
+				<Tooltip.Trigger
+					asChild={(triggerProps) => (
+						<Icon
+							{...triggerProps()}
+							color={saveColor()}
+							asChild={(childProps) => (
+								<Dynamic {...childProps} component={SaveIconComponent()} />
+							)}
+						/>
+					)}
+				/>
 				<Tooltip.Positioner>
 					<Tooltip.Arrow>
 						<Tooltip.ArrowTip />

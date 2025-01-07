@@ -1,4 +1,4 @@
-import { type Component, createMemo } from "solid-js";
+import { type Component, Show, createMemo } from "solid-js";
 
 import { ChevronDownIcon } from "lucide-solid";
 import { Accordion } from "~/components/ui/accordion";
@@ -8,7 +8,6 @@ import type {
 	SelectedSubjects,
 	SimplifiedSelectedSubjects,
 } from "~/context/types";
-import { Button } from "./ui/button";
 
 const Semester: Component<{
 	selectedSubjects: SimplifiedSelectedSubjects;
@@ -16,8 +15,6 @@ const Semester: Component<{
 	index: number;
 	roadID: string;
 	isOpen: boolean;
-	hideIap: boolean;
-	openRoadSettingsDialog: () => void;
 }> = (props) => {
 	const [store, { getUserYear }] = useCourseDataContext();
 
@@ -53,20 +50,20 @@ const Semester: Component<{
 	});
 
 	return (
-		<Accordion.Item value={props.index.toString()}>
-			<Accordion.ItemTrigger>
-				<Button variant="link" onClick={props.openRoadSettingsDialog}>
+		<Show when={!store.hideIAP || semesterType() !== "IAP"}>
+			<Accordion.Item value={props.index.toString()}>
+				<Accordion.ItemTrigger>
 					{semesterYearName()} {semesterType()}{" "}
 					{props.index > 0 ? `'${semesterYear().toString().substring(2)}` : ""}
-				</Button>
-				<Accordion.ItemIndicator>
-					<ChevronDownIcon />
-				</Accordion.ItemIndicator>
-			</Accordion.ItemTrigger>
-			<Accordion.ItemContent>
-				Showing semester {props.index} for {props.roadID}
-			</Accordion.ItemContent>
-		</Accordion.Item>
+					<Accordion.ItemIndicator>
+						<ChevronDownIcon />
+					</Accordion.ItemIndicator>
+				</Accordion.ItemTrigger>
+				<Accordion.ItemContent>
+					Showing semester {props.index} for {props.roadID}
+				</Accordion.ItemContent>
+			</Accordion.Item>
+		</Show>
 	);
 };
 

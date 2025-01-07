@@ -83,7 +83,11 @@ const ThemeToggler: Component = () => {
 
 	return (
 		<>
-			<IconButton variant="ghost" onClick={handleClick}>
+			<IconButton
+				variant="ghost"
+				onClick={handleClick}
+				aria-label="Toggle Theme"
+			>
 				<Switch fallback={<SunMoonIcon />}>
 					<Match when={theme() === "light"}>
 						<SunIcon />

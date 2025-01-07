@@ -2,15 +2,17 @@ import { A } from "@solidjs/router";
 import type { Component } from "solid-js";
 
 import About from "~/components/About";
+import Settings from "~/components/Settings";
 import ThemeToggler from "~/components/ThemeToggler";
 import { Link } from "~/components/ui/link";
 import { Text } from "~/components/ui/text";
 
-const Sidebar: Component = () => {
+const Sidebar: Component<{ changeYear: (year: number) => void }> = (props) => {
 	return (
 		<>
 			<About />
 			<ThemeToggler />
+			<Settings changeYear={props.changeYear} />
 		</>
 	);
 };

@@ -1,13 +1,14 @@
 import { MenuIcon, XIcon } from "lucide-solid";
-import type { Component } from "solid-js";
-import Sidebar, {
+import type { ParentComponent } from "solid-js";
+
+import {
 	SidebarProbelmsEmail,
 	SidebarWarningText,
 } from "~/components/layout/Sidebar";
 import { Drawer } from "~/components/ui/drawer";
 import { IconButton } from "~/components/ui/icon-button";
 
-const SidebarDialog: Component<Drawer.RootProps> = (props) => {
+const SidebarDialog: ParentComponent<Drawer.RootProps> = (props) => {
 	return (
 		<Drawer.Root lazyMount unmountOnExit variant="left" {...props}>
 			<Drawer.Trigger
@@ -39,10 +40,8 @@ const SidebarDialog: Component<Drawer.RootProps> = (props) => {
 							)}
 						/>
 					</Drawer.Header>
-					<Drawer.Body>
-						<Sidebar />
-					</Drawer.Body>
-					<Drawer.Footer gap="3">
+					<Drawer.Body>{props.children}</Drawer.Body>
+					<Drawer.Footer color="fg.muted" gap="3">
 						<SidebarProbelmsEmail />
 					</Drawer.Footer>
 				</Drawer.Content>
