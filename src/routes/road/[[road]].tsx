@@ -17,6 +17,7 @@ import type { SimplifiedSelectedSubjects } from "~/context/types";
 import { css } from "styled-system/css";
 import { Flex } from "styled-system/jsx";
 import Auth, { type AuthRef } from "~/components/Auth";
+import BetaAlert from "~/components/BetaAlert";
 import ImportExport from "~/components/ImportExport";
 import Road from "~/components/Road";
 import RoadTabs from "~/components/RoadTabs";
@@ -157,8 +158,9 @@ export default function RoadPage() {
 		console.log(authComponentRef?.newRoads());
 	};
 
-	// TODO: find a way to make this nicer,
-	// but creatememo doesnt work for some reason...
+	// creatememo doesnt work for some reason...
+	// I have a feeling its due to the following issue:
+	// https://github.com/solidjs-community/solid-primitives/discussions/708
 	const [roadKeys, setRoadKeys] = createSignal(["$defaultroad$"]);
 	createEffect(() => {
 		setRoadKeys(getRoadKeys());
@@ -175,7 +177,12 @@ export default function RoadPage() {
 	return (
 		<>
 			<Flex>
-				<SidebarContainer class={styles.aside}>
+				<SidebarContainer
+					class={styles.sidebar}
+					headerClass={styles.sidebarHeader}
+					bodyClass={styles.sidebarBody}
+					footerClass={styles.sidebarFooter}
+				>
 					<Sidebar changeYear={(e) => authComponentRef?.changeSemester(e)} />
 				</SidebarContainer>
 				<main class={styles.main}>
@@ -186,6 +193,7 @@ export default function RoadPage() {
 						onValueChange={(e) => setActiveRoad(e.value)}
 					>
 						<NavbarContainer>
+							<BetaAlert />
 							<Flex flexDirection="row" justifyContent="space-between">
 								<ImportExport addRoad={addRoad} />
 								<Auth

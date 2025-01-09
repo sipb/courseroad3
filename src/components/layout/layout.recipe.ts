@@ -2,9 +2,9 @@ import { sva } from "styled-system/css";
 
 export const recipe = sva({
 	className: "layout",
-	slots: ["aside", "main"],
+	slots: ["main", "sidebar", "sidebarHeader", "sidebarBody", "sidebarFooter"],
 	base: {
-		aside: {
+		sidebar: {
 			bg: {
 				base: "gray.2",
 				_dark: "#0e0e0e",
@@ -13,15 +13,19 @@ export const recipe = sva({
 			position: "fixed",
 			top: "0",
 			bottom: "0",
-			display: { base: "none", md: "block" },
-			ps: "max(32px, calc((100vw - (1440px - 64px)) / 2))",
-			pe: "8",
+			display: { base: "none", md: "grid" },
+			p: "4",
 			minWidth: "272px",
 			overflow: "auto",
 			width: {
 				base: "272px",
 				lg: "calc((100vw - (1440px - 64px)) / 2 + 272px - 32px)",
 			},
+			gridTemplateColumns: "1fr",
+			gridTemplateRows: "auto 1fr auto",
+			gridTemplateAreas: "'header' 'main' 'footer'",
+			gridGap: "2",
+			height: "100%",
 		},
 		main: {
 			minWidth: "0",
@@ -31,6 +35,15 @@ export const recipe = sva({
 				md: "max(calc((100vw - 1440px) / 2 + 272px), 272px)",
 			},
 			// pe: "calc((100vw - 1440px) / 2)",
+		},
+		sidebarHeader: {
+			gridArea: "header",
+		},
+		sidebarBody: {
+			gridArea: "main",
+		},
+		sidebarFooter: {
+			gridArea: "footer",
 		},
 	},
 });

@@ -1,19 +1,34 @@
 import { A } from "@solidjs/router";
 import type { Component } from "solid-js";
+import { Box, Flex, HStack, Stack } from "styled-system/jsx";
 
+import { SquareCheckIcon } from "lucide-solid";
 import About from "~/components/About";
 import Settings from "~/components/Settings";
 import ThemeToggler from "~/components/ThemeToggler";
+import { Icon } from "~/components/ui/icon";
 import { Link } from "~/components/ui/link";
 import { Text } from "~/components/ui/text";
 
-const Sidebar: Component<{ changeYear: (year: number) => void }> = (props) => {
+const Sidebar: Component<{
+	changeYear: (year: number) => void;
+}> = (props) => {
 	return (
-		<>
+		<Stack>
+			<SidebarButtons changeYear={props.changeYear} />
+		</Stack>
+	);
+};
+
+const SidebarButtons: Component<{
+	changeYear: (year: number) => void;
+}> = (props) => {
+	return (
+		<HStack>
 			<About />
 			<ThemeToggler />
 			<Settings changeYear={props.changeYear} />
-		</>
+		</HStack>
 	);
 };
 
@@ -94,6 +109,21 @@ export const SidebarProbelmsEmail: Component = () => {
 			/>
 			.
 		</Text>
+	);
+};
+
+export const SidebarTitle: Component = () => {
+	return (
+		<Flex>
+			<Box p={2} bg="colorPalette.default" color="colorPalette.fg">
+				<HStack>
+					<Icon asChild={(childProps) => <SquareCheckIcon {...childProps} />} />
+					<Text fontWeight="bold" as="h3" letterSpacing=".2rem">
+						CourseRoad
+					</Text>
+				</HStack>
+			</Box>
+		</Flex>
 	);
 };
 

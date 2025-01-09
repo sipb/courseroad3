@@ -3,6 +3,7 @@ import type { ParentComponent } from "solid-js";
 
 import {
 	SidebarProbelmsEmail,
+	SidebarTitle,
 	SidebarWarningText,
 } from "~/components/layout/Sidebar";
 import { Drawer } from "~/components/ui/drawer";
@@ -22,7 +23,9 @@ const SidebarDialog: ParentComponent<Drawer.RootProps> = (props) => {
 			<Drawer.Positioner>
 				<Drawer.Content>
 					<Drawer.Header>
-						<Drawer.Title>CourseRoad</Drawer.Title>
+						<Drawer.Title>
+							<SidebarTitle />
+						</Drawer.Title>
 						<Drawer.Description>
 							<SidebarWarningText />
 						</Drawer.Description>

@@ -3,7 +3,7 @@ import { type ParentComponent, createResource } from "solid-js";
 import { createStore, produce, reconcile } from "solid-js/store";
 import { isServer } from "solid-js/web";
 
-import localforage from "localforage";
+import * as localforage from "localforage";
 
 import {
 	CourseDataContext,
