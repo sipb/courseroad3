@@ -1,27 +1,17 @@
-import {
-	type Component,
-	For,
-	Index,
-	createDeferred,
-	createEffect,
-	createMemo,
-	createSignal,
-	on,
-} from "solid-js";
+import { type Component, For, Index, createMemo, createSignal } from "solid-js";
+import { Portal } from "solid-js/web";
 import { Stack } from "styled-system/jsx";
 
-import { CheckIcon, ChevronsUpDownIcon, Store, XIcon } from "lucide-solid";
+import { useCombobox, useTagsInput } from "@ark-ui/solid";
+import { CheckIcon, ChevronsUpDownIcon, XIcon } from "lucide-solid";
 import { Combobox, createListCollection } from "~/components/ui/combobox";
 import { IconButton } from "~/components/ui/icon-button";
 import { TagsInput } from "~/components/ui/tags-input";
 
-import { useCombobox, useTagsInput } from "@ark-ui/solid";
-import { combobox } from "styled-system/recipes";
 import { useCourseDataContext } from "~/context/create";
 import type {
 	CourseRequirements,
 	CourseRequirementsWithKey,
-	Reqs,
 } from "~/context/types";
 
 const Audit: Component<{
@@ -30,8 +20,14 @@ const Audit: Component<{
 	return (
 		<Stack>
 			<SelectProgram reqList={props.reqList} />
+			<ReqTreeview />
 		</Stack>
 	);
+};
+
+const ReqTreeview: Component = (props) => {
+	// TODO: IMPLMENT THIS
+	return <></>;
 };
 
 const SelectProgram: Component<{
@@ -176,30 +172,31 @@ const SelectProgram: Component<{
 						</TagsInput.Control>
 					)}
 				/>
-
-				<Combobox.Positioner>
-					<Combobox.Content maxH="200px" overflowY="auto">
-						<Combobox.ItemGroup>
-							<For
-								each={items()}
-								fallback={
-									<Combobox.Item item={null}>
-										<Combobox.ItemText>No results found</Combobox.ItemText>
-									</Combobox.Item>
-								}
-							>
-								{(item) => (
-									<Combobox.Item item={item} minH="fit-content">
-										<Combobox.ItemText>{item.label}</Combobox.ItemText>
-										<Combobox.ItemIndicator>
-											<CheckIcon />
-										</Combobox.ItemIndicator>
-									</Combobox.Item>
-								)}
-							</For>
-						</Combobox.ItemGroup>
-					</Combobox.Content>
-				</Combobox.Positioner>
+				<Portal>
+					<Combobox.Positioner>
+						<Combobox.Content maxH="md" overflowY="auto">
+							<Combobox.ItemGroup>
+								<For
+									each={items()}
+									fallback={
+										<Combobox.Item item={null}>
+											<Combobox.ItemText>No results found</Combobox.ItemText>
+										</Combobox.Item>
+									}
+								>
+									{(item) => (
+										<Combobox.Item item={item} minH="fit-content">
+											<Combobox.ItemText>{item.label}</Combobox.ItemText>
+											<Combobox.ItemIndicator>
+												<CheckIcon />
+											</Combobox.ItemIndicator>
+										</Combobox.Item>
+									)}
+								</For>
+							</Combobox.ItemGroup>
+						</Combobox.Content>
+					</Combobox.Positioner>
+				</Portal>
 			</TagsInput.RootProvider>
 		</Combobox.RootProvider>
 	);
