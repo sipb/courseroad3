@@ -45,7 +45,7 @@ export const defaultState = {
 	// all: update audit for all majors (for changes like adding a class)
 	// {specific major}: update audit for a specific major (for changes like adding a major)
 	// none: no update to audit is needed (for changes like road name)
-	fulfillmentNeeded: "all" as "any" | "all" | "none",
+	fulfillmentNeeded: "all" as "all" | "none" | string, // i know this is just string but its good to remember ig
 	// list of road IDs that have not been retrieved from the server yet
 	unretrieved: [] as string[],
 	loadSubjectsPromise: undefined as Promise<SubjectFull[]> | undefined,
@@ -58,7 +58,7 @@ export const defaultActions = {
 	resetState: () => {},
 	addClass: (newClass: SelectedSubjects) => {},
 	addFromCard: (newClass: SubjectFull) => {},
-	addReq: (event: "any" | "all" | "none") => {},
+	addReq: (event: string) => {},
 	migrateOldSubjects: (roadID: string) => {},
 	allowCookies: () => {},
 	cancelAddFromCard: () => {},

@@ -1,9 +1,6 @@
 import { makePersisted } from "@solid-primitives/storage";
 import { type ParentComponent, createResource } from "solid-js";
 import { createStore, produce, reconcile } from "solid-js/store";
-import { isServer } from "solid-js/web";
-
-import * as localforage from "localforage";
 
 import {
 	CourseDataContext,
@@ -17,7 +14,6 @@ const CourseDataProvider: ParentComponent = (props) => {
 		createStore(structuredClone(defaultState)),
 		{
 			name: "courseRoadStore",
-			storage: !isServer ? localforage : undefined,
 		},
 	);
 
@@ -43,7 +39,7 @@ const CourseDataProvider: ParentComponent = (props) => {
 			setStore("addingFromCard", true);
 			setStore("itemAdding", newClass);
 		},
-		addReq(event: "any" | "all" | "none") {
+		addReq(event: string) {
 			setStore(
 				"roads",
 				produce((roads) => {
@@ -189,7 +185,25 @@ const CourseDataProvider: ParentComponent = (props) => {
 		popClassStack: () => {},
 		pushClassStack: (id) => {},
 		removeClass: ({ classInfo, classIndex }) => {},
-		removeReq: (event) => {},
+		removeReq: (event) => {
+			const reqIndex =
+				store.roads[store.activeRoad].contents.coursesOfStudy.indexOf(event);
+
+			if (reqIndex === -1) {
+				console.log(
+					"Attempted to remove a requirement not in the requirements list.",
+				);
+			} else {
+				setStore(
+					"roads",
+					produce((roads) => {
+						roads[store.activeRoad].contents.coursesOfStudy.splice(reqIndex, 1);
+						roads[store.activeRoad].changed = new Date().toISOString();
+					}),
+				);
+				setStore("fulfillmentNeeded", "none");
+			}
+		},
 		removeProgressAssertion: (uniqueKey) => {},
 		resetID: ({ oldid, newid }) => {},
 		setActiveRoad: (activeRoad) => {

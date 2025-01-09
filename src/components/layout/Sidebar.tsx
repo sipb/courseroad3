@@ -4,18 +4,27 @@ import { Box, Flex, HStack, Stack } from "styled-system/jsx";
 
 import { SquareCheckIcon } from "lucide-solid";
 import About from "~/components/About";
+import Audit from "~/components/Audit";
 import Settings from "~/components/Settings";
 import ThemeToggler from "~/components/ThemeToggler";
 import { Icon } from "~/components/ui/icon";
 import { Link } from "~/components/ui/link";
 import { Text } from "~/components/ui/text";
 
+import type {
+	CourseRequirementsWithKey,
+	Reqs,
+	SimplifiedSelectedSubjects,
+} from "~/context/types";
+
 const Sidebar: Component<{
 	changeYear: (year: number) => void;
+	reqList: CourseRequirementsWithKey[];
 }> = (props) => {
 	return (
 		<Stack>
 			<SidebarButtons changeYear={props.changeYear} />
+			<Audit reqList={props.reqList} />
 		</Stack>
 	);
 };

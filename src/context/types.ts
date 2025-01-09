@@ -75,6 +75,10 @@ export interface CourseRequirements {
 	"threshold-desc"?: string;
 }
 
+export interface CourseRequirementsWithKey extends CourseRequirements {
+	key: string;
+}
+
 export interface Reqs {
 	req?: string;
 	"connection-type": "any" | "all" | "none";

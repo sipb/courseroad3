@@ -5,6 +5,7 @@ import {
 	For,
 	createEffect,
 	createMemo,
+	createResource,
 	createSignal,
 	on,
 	onMount,
@@ -12,7 +13,11 @@ import {
 import { createStore } from "solid-js/store";
 
 import { useCourseDataContext } from "~/context/create";
-import type { SimplifiedSelectedSubjects } from "~/context/types";
+import type {
+	CourseRequirements,
+	CourseRequirementsWithKey,
+	SimplifiedSelectedSubjects,
+} from "~/context/types";
 
 import { css } from "styled-system/css";
 import { Flex } from "styled-system/jsx";
@@ -48,8 +53,7 @@ export default function RoadPage() {
 	const cookiesString = getCookiesString();
 	const navigate = useNavigate();
 
-	const [reqTrees, setReqStrees] = createStore({});
-	const [reqList, setReqList] = createStore([]);
+	const [reqTrees, setReqStrees] = createSignal({});
 	const [dragSemesterNum, setDragSemesterNum] = createSignal(-1);
 	const [justLoaded, setJustLoaded] = createSignal(true);
 	const [conflictDialog, setConflictDialog] = createSignal(false);
@@ -59,6 +63,24 @@ export default function RoadPage() {
 	const [searchOpen, setSearchOpen] = createSignal(false);
 
 	let authComponentRef: AuthRef | undefined;
+
+	const [reqList] = createResource(
+		async () => {
+			const response = await fetch(
+				`${import.meta.env.VITE_FIREROAD_URL}/requirements/list_reqs/`,
+			);
+			const data = (await response.json()) as Record<
+				string,
+				CourseRequirements
+			>;
+			const dataWithKeys = Object.keys(data).map((key) => ({
+				...data[key],
+				key,
+			}));
+			return dataWithKeys.sort();
+		},
+		{ initialValue: [] },
+	);
 
 	const setActiveRoadParam = () => {
 		const roadRequested = params.road;
@@ -153,9 +175,7 @@ export default function RoadPage() {
 		});
 		resetFulfillmentNeeded();
 		setActiveRoad(tempRoadID);
-		console.log(authComponentRef?.newRoads());
 		authComponentRef?.setNewRoads([...authComponentRef.newRoads(), tempRoadID]);
-		console.log(authComponentRef?.newRoads());
 	};
 
 	// creatememo doesnt work for some reason...
@@ -183,7 +203,10 @@ export default function RoadPage() {
 					bodyClass={styles.sidebarBody}
 					footerClass={styles.sidebarFooter}
 				>
-					<Sidebar changeYear={(e) => authComponentRef?.changeSemester(e)} />
+					<Sidebar
+						changeYear={(e) => authComponentRef?.changeSemester(e)}
+						reqList={reqList()}
+					/>
 				</SidebarContainer>
 				<main class={styles.main}>
 					<Tabs.Root
@@ -212,6 +235,7 @@ export default function RoadPage() {
 									<SidebarDrawer>
 										<Sidebar
 											changeYear={(e) => authComponentRef?.changeSemester(e)}
+											reqList={reqList()}
 										/>
 									</SidebarDrawer>
 								</div>
