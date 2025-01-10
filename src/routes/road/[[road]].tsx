@@ -12,10 +12,11 @@ import {
 } from "solid-js";
 import { createStore } from "solid-js/store";
 
-import { useCourseDataContext } from "~/context/create";
+import { defaultState, useCourseDataContext } from "~/context/create";
 import type {
 	CourseRequirements,
 	CourseRequirementsWithKey,
+	Reqs,
 	SimplifiedSelectedSubjects,
 } from "~/context/types";
 
@@ -33,6 +34,7 @@ import SidebarDrawer from "~/components/layout/SidebarDrawer";
 import { recipe as layoutRecipe } from "~/components/layout/layout.recipe";
 import { Input } from "~/components/ui/input";
 import { Tabs } from "~/components/ui/tabs";
+import { flatten } from "~/lib/browserSupport";
 
 const styles = layoutRecipe();
 
@@ -48,12 +50,14 @@ export default function RoadPage() {
 			watchRoadChanges,
 			setRetrieved,
 			getRoadKeys,
+			resetState,
+			loadAllSubjects,
 		},
 	] = useCourseDataContext();
 	const cookiesString = getCookiesString();
 	const navigate = useNavigate();
 
-	const [reqTrees, setReqStrees] = createSignal({});
+	const [reqTrees, setReqTrees] = createStore({} as Record<string, Reqs>);
 	const [dragSemesterNum, setDragSemesterNum] = createSignal(-1);
 	const [justLoaded, setJustLoaded] = createSignal(true);
 	const [conflictDialog, setConflictDialog] = createSignal(false);
@@ -61,6 +65,7 @@ export default function RoadPage() {
 	const [searchInput, setSearchInput] = createSignal("");
 	const [dismissedCookies, setDismissedCookies] = createSignal(false);
 	const [searchOpen, setSearchOpen] = createSignal(false);
+	const [isUpdatingFulfillment, setIsUpdatingFulfillment] = createSignal(false);
 
 	let authComponentRef: AuthRef | undefined;
 
@@ -111,8 +116,7 @@ export default function RoadPage() {
 					setRetrieved(newRoad);
 				});
 			} else if (newRoad !== "") {
-				// TODO: IMPLEMENT
-				// updateFulfillment(store.fulfillmentNeeded);
+				updateFulfillment(store.fulfillmentNeeded);
 			}
 			// If just loaded, store isn't loaded yet
 			// and so we can't overwrite the router just yet
@@ -130,8 +134,7 @@ export default function RoadPage() {
 				allowCookies();
 			}
 			if (activeRoad() !== "") {
-				// TODO: IMPLEMENT
-				// updateFulfillment(store.fulfillmentNeeded);
+				updateFulfillment(store.fulfillmentNeeded);
 			}
 			resetFulfillmentNeeded();
 
@@ -143,8 +146,61 @@ export default function RoadPage() {
 		}),
 	);
 
+	const updateFulfillment = (fulfillmentNeeded: string) => {
+		if (!isUpdatingFulfillment() && fulfillmentNeeded !== "none") {
+			setIsUpdatingFulfillment(true);
+
+			const fulfillments =
+				fulfillmentNeeded === "all"
+					? roads()[activeRoad()].contents.coursesOfStudy
+					: [fulfillmentNeeded];
+
+			for (const req of fulfillments) {
+				const alteredRoadContents = Object.assign(
+					{},
+					roads()[activeRoad()].contents,
+				);
+
+				alteredRoadContents.selectedSubjects = flatten(
+					alteredRoadContents.selectedSubjects,
+				);
+
+				fetch(
+					`${import.meta.env.VITE_FIREROAD_URL}/requirements/progress/${req}/`,
+					{
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(alteredRoadContents),
+					},
+				).then((response) =>
+					response.json().then((data) => {
+						setReqTrees(req, data);
+					}),
+				);
+			}
+
+			setIsUpdatingFulfillment(false);
+		}
+	};
+
 	onMount(() => {
+		if (defaultState.versionNumber !== store.versionNumber) {
+			resetState();
+		}
+
 		setActiveRoadParam();
+
+		updateFulfillment("all");
+
+		// TODO: consider making this a resource instead of loaded on mount
+		loadAllSubjects().then(() => {
+			console.log("Subjects were loaded successfully!");
+		});
+		// .catch((e) => {
+		// 	console.log(`There was an error loading subjects: \n${e}`);
+		// });
 	});
 
 	const addRoad = (

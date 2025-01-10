@@ -1,6 +1,9 @@
 import { makePersisted } from "@solid-primitives/storage";
 import { type ParentComponent, createResource } from "solid-js";
 import { createStore, produce, reconcile } from "solid-js/store";
+import { isServer } from "solid-js/web";
+
+import localforage from "localforage";
 
 import {
 	CourseDataContext,
@@ -14,6 +17,7 @@ const CourseDataProvider: ParentComponent = (props) => {
 		createStore(structuredClone(defaultState)),
 		{
 			name: "courseRoadStore",
+			storage: !isServer ? localforage : undefined,
 		},
 	);
 
@@ -179,8 +183,130 @@ const CourseDataProvider: ParentComponent = (props) => {
 				}),
 			);
 		},
-		parseGenericCourses: () => {},
-		parseGenericIndex: () => {},
+		parseGenericCourses: () => {
+			setStore(
+				"genericCourses",
+				produce((genericCourses) => {
+					// clears array
+					genericCourses.length = 0;
+
+					const girAttributes = {
+						PHY1: ["Physics 1 GIR", "p1"],
+						PHY2: ["Physics 2 GIR", "p2"],
+						CHEM: ["Chemistry GIR", "c"],
+						BIOL: ["Biology GIR", "b"],
+						CAL1: ["Calculus I GIR", "m1"],
+						CAL2: ["Calculus II GIR", "m2"],
+						LAB: ["Lab GIR", "l1"],
+						REST: ["REST GIR", "r"],
+					} as const;
+
+					const hassAttributes = {
+						"HASS-A": ["HASS Arts", "ha"],
+						"HASS-S": ["HASS Social Sciences", "hs"],
+						"HASS-H": ["HASS Humanities", "hh"],
+						"HASS-E": ["HASS Elective", "ht"],
+					} as const;
+
+					const ciAttributes = {
+						"CI-H": ["Communication Intensive", "hc"],
+						"CI-HW": ["Communication Intensive with Writing", "hw"],
+					} as const;
+
+					const baseGeneric = {
+						description:
+							"Use this generic subject to indicate that you are fulfilling a requirement, but do not yet have a specific subject selected.",
+						total_units: 12,
+					} as const;
+
+					const baseurl =
+						"http://student.mit.edu/catalog/search.cgi?search=&style=verbatim&when=*&termleng=4&days_offered=*&start_time=*&duration=*&total_units=*" as const;
+
+					for (const gir in girAttributes) {
+						const offeredGir = actions.getMatchingAttributes(
+							gir,
+							undefined,
+							undefined,
+						);
+
+						genericCourses.push({
+							...baseGeneric,
+							...offeredGir,
+
+							gir_attribute: gir as keyof typeof girAttributes,
+							title: `Generic ${girAttributes[gir as keyof typeof girAttributes][0]}`,
+							subject_id: gir,
+							url: `${baseurl}&cred=${girAttributes[gir as keyof typeof girAttributes][1]}&commun_int=*`,
+						});
+					}
+
+					for (const hass in hassAttributes) {
+						const offeredHass = actions.getMatchingAttributes(
+							undefined,
+							hass,
+							undefined,
+						);
+
+						genericCourses.push({
+							...baseGeneric,
+							...offeredHass,
+							hass_attribute: hass as keyof typeof hassAttributes,
+							title: `Generic ${hass}`,
+							subject_id: hass,
+							url: `${baseurl}&cred=${hassAttributes[hass as keyof typeof hassAttributes][1]}&commun_int=*`,
+						});
+
+						const offeredHassCI = actions.getMatchingAttributes(
+							undefined,
+							hass,
+							"CI-H",
+						);
+
+						genericCourses.push({
+							...baseGeneric,
+							...offeredHassCI,
+							hass_attribute: hass as keyof typeof hassAttributes,
+							communication_requirement: "CI-H",
+							title: `Generic CI-H ${hass}`,
+							subject_id: `CI-H ${hass}`,
+							url: `${baseurl}&cred=${hassAttributes[hass as keyof typeof hassAttributes][1]}&commun_int=${ciAttributes["CI-H"][1]}`,
+						});
+					}
+
+					for (const ci in ciAttributes) {
+						const offeredCI = actions.getMatchingAttributes(
+							undefined,
+							undefined,
+							ci,
+						);
+
+						genericCourses.push({
+							...baseGeneric,
+							...offeredCI,
+							communication_requirement: ci as keyof typeof ciAttributes,
+							title: `Generic ${ci}`,
+							hass_attribute: "HASS",
+							subject_id: ci as keyof typeof ciAttributes,
+							url: `${baseurl}&cred=*&commun_int=${ciAttributes[ci as keyof typeof ciAttributes][1]}`,
+						});
+					}
+				}),
+			);
+		},
+		parseGenericIndex: () => {
+			setStore(
+				"genericIndex",
+				reconcile(
+					store.genericCourses.reduce(
+						(obj, item, index) => {
+							obj[item.subject_id] = index;
+							return obj;
+						},
+						{} as Record<string, number>,
+					),
+				),
+			);
+		},
 		parseSubjectsIndex: () => {},
 		popClassStack: () => {},
 		pushClassStack: (id) => {},
@@ -209,7 +335,9 @@ const CourseDataProvider: ParentComponent = (props) => {
 		setActiveRoad: (activeRoad) => {
 			setStore("activeRoad", activeRoad);
 		},
-		setFullSubjectsInfoLoaded: (isFull) => {},
+		setFullSubjectsInfoLoaded: (isFull) => {
+			setStore("fullSubjectsInfoLoaded", isFull);
+		},
 		setLoggedIn: (newLoggedIn) => {
 			setStore("loggedIn", newLoggedIn);
 		},
@@ -243,7 +371,9 @@ const CourseDataProvider: ParentComponent = (props) => {
 				}),
 			);
 		},
-		setSubjectsInfo: (data) => {},
+		setSubjectsInfo: (data) => {
+			setStore("subjectsInfo", reconcile(data));
+		},
 		setCurrentSemester: (sem) => {
 			setStore("currentSemester", Math.max(1, sem));
 		},
@@ -255,11 +385,34 @@ const CourseDataProvider: ParentComponent = (props) => {
 		resetFulfillmentNeeded: () => {
 			setStore("fulfillmentNeeded", "all");
 		},
-		setLoadSubjectsPromise: (promise) => {},
-		setSubjectsLoaded: () => {},
+		setLoadSubjectsPromise: (promise) => {
+			setStore("loadSubjectsPromise", promise);
+		},
+		setSubjectsLoaded: () => {
+			setStore("subjectsLoaded", true);
+		},
 		queueRoadMigration: (roadID) => {},
-		clearMigrationQueue: () => {},
-		loadSubjects: async () => {},
+		clearMigrationQueue: () => {
+			setStore("roadsToMigrate", reconcile([]));
+		},
+		loadAllSubjects: async () => {
+			const promise = fetch(
+				`${import.meta.env.VITE_FIREROAD_URL}/courses/all?full=true`,
+			).then((response) => response.json() as Promise<SubjectFull[]>);
+
+			actions.setLoadSubjectsPromise(promise);
+			const response = await promise;
+			actions.setSubjectsLoaded();
+			actions.setSubjectsInfo(response);
+			actions.setFullSubjectsInfoLoaded(true);
+			actions.parseGenericCourses();
+			actions.parseGenericIndex();
+			actions.parseSubjectsIndex();
+			for (const roadID of store.roadsToMigrate) {
+				actions.migrateOldSubjects(roadID);
+			}
+			actions.clearMigrationQueue();
+		},
 		addAtPlaceholder: (index) => {},
 		waitLoadSubjects: async () => {},
 		waitAndMigrateOldSubjects: (roadID) => {},

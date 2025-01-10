@@ -6,7 +6,7 @@ export interface Subject {
 	offered_IAP: boolean;
 	offered_spring: boolean;
 	offered_summer: boolean;
-	public: boolean;
+	public?: boolean;
 	semester?: number; // specifically for when in a road...
 	units?: number; // is manually set in some places
 	index?: number; // is also manually set idk why
@@ -21,7 +21,7 @@ export interface Subject {
 	not_offered_year?: string;
 	instructors?: string[];
 	communication_requirement?: "CI-H" | "CI-HW";
-	hass_attribute?: "HASS-A" | "HASS-E" | "HASS-H" | "HASS-S";
+	hass_attribute?: "HASS-A" | "HASS-E" | "HASS-H" | "HASS-S" | "HASS";
 	gir_attribute?:
 		| "BIOL"
 		| "CAL1"
@@ -29,24 +29,24 @@ export interface Subject {
 		| "CHEM"
 		| "LAB"
 		| "LAB2"
-		| "GIR:PHY1"
-		| "GIR:PHY2"
-		| "GIR:REST";
+		| "PHY1"
+		| "PHY2"
+		| "REST";
 	children?: Subject["subject_id"][];
 	parent?: Subject["subject_id"];
 	prereqs?: string;
 	virtual_status?: "In-Person" | "Virtual";
-	old_id: string;
+	old_id?: string;
 }
 
 export interface SubjectFull extends Subject {
-	lecture_units: number;
-	lab_units: number;
-	design_units: number;
-	preparation_units: number;
-	is_variable_units: boolean;
-	is_half_class: boolean;
-	has_final: boolean;
+	lecture_units?: number;
+	lab_units?: number;
+	design_units?: number;
+	preparation_units?: number;
+	is_variable_units?: boolean;
+	is_half_class?: boolean;
+	has_final?: boolean;
 	description?: string;
 	prerequisites?: string;
 	corequisites?: string;
