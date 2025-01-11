@@ -15,7 +15,6 @@ import { createStore } from "solid-js/store";
 import { defaultState, useCourseDataContext } from "~/context/create";
 import type {
 	CourseRequirements,
-	CourseRequirementsWithKey,
 	Reqs,
 	SimplifiedSelectedSubjects,
 } from "~/context/types";
@@ -195,12 +194,13 @@ export default function RoadPage() {
 		updateFulfillment("all");
 
 		// TODO: consider making this a resource instead of loaded on mount
-		loadAllSubjects().then(() => {
-			console.log("Subjects were loaded successfully!");
-		});
-		// .catch((e) => {
-		// 	console.log(`There was an error loading subjects: \n${e}`);
-		// });
+		loadAllSubjects()
+			.then(() => {
+				console.log("Subjects were loaded successfully!");
+			})
+			.catch((e) => {
+				console.log(`There was an error loading subjects: \n${e}`);
+			});
 	});
 
 	const addRoad = (

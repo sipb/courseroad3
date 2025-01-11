@@ -174,8 +174,8 @@ const SelectProgram: Component<{
 				/>
 				<Portal>
 					<Combobox.Positioner>
-						<Combobox.Content maxH="md" overflowY="auto">
-							<Combobox.ItemGroup>
+						<Combobox.Content maxH="md">
+							<Combobox.ItemGroup overflowY="auto">
 								<For
 									each={items()}
 									fallback={
