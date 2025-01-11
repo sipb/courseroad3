@@ -163,7 +163,7 @@ interface RoadContents {
 	};
 }
 
-export interface SelectedSubjects {
+export interface SelectedSubjects extends Subject {
 	units: number;
 	semester: number;
 	overrideWarnings: boolean;

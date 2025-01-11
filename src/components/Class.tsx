@@ -1,6 +1,13 @@
 import type { Component } from "solid-js";
 
-const Class: Component = (props) => {
+import type { Subject } from "~/context/types";
+
+const Class: Component<{
+	classIndex: number;
+	classInfo: "placeholder" | Subject;
+	semesterIndex: number;
+	// warnings: string[];
+}> = (props) => {
 	return <div />;
 };
 
