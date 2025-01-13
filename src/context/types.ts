@@ -1,3 +1,5 @@
+// TODO: look through django models and make sure everything is here/accurate
+
 export interface Subject {
 	subject_id: string;
 	title: string;
