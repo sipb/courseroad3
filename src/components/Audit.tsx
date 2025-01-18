@@ -1,9 +1,9 @@
 import { type Component, For, Index, createMemo, createSignal } from "solid-js";
 import { Portal } from "solid-js/web";
-import { Stack } from "styled-system/jsx";
 
 import { useCombobox, useTagsInput } from "@ark-ui/solid";
 import { CheckIcon, ChevronsUpDownIcon, XIcon } from "lucide-solid";
+import { Stack } from "styled-system/jsx";
 import { Combobox, createListCollection } from "~/components/ui/combobox";
 import { IconButton } from "~/components/ui/icon-button";
 import { TagsInput } from "~/components/ui/tags-input";
@@ -148,7 +148,6 @@ const SelectProgram: Component<{
 									</TagsInput.Item>
 								)}
 							</Index>
-
 							<TagsInput.Input
 								placeholder={
 									comboboxInput().hasSelectedItems
@@ -157,6 +156,7 @@ const SelectProgram: Component<{
 								}
 								asChild={(inputProps) => <Combobox.Input {...inputProps()} />}
 							/>
+
 							<Combobox.Trigger
 								asChild={(triggerProps) => (
 									<IconButton

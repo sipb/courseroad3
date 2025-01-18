@@ -1,6 +1,9 @@
 import { MenuIcon, XIcon } from "lucide-solid";
 import type { ParentComponent } from "solid-js";
+import { Float } from "styled-system/jsx";
 
+import About from "~/components/About";
+import ThemeToggler from "~/components/ThemeToggler";
 import {
 	SidebarProbelmsEmail,
 	SidebarTitle,
@@ -31,21 +34,21 @@ const SidebarDialog: ParentComponent<Drawer.RootProps> = (props) => {
 						</Drawer.Description>
 						<Drawer.CloseTrigger
 							asChild={(closeProps) => (
-								<IconButton
-									{...closeProps()}
-									variant="ghost"
-									position="absolute"
-									top={3}
-									right={4}
-								>
-									<XIcon />
-								</IconButton>
+								<Float placement="top-end" offsetY="8" offsetX="14">
+									<About />
+									<IconButton {...closeProps()} variant="ghost">
+										<XIcon />
+									</IconButton>
+								</Float>
 							)}
 						/>
 					</Drawer.Header>
 					<Drawer.Body>{props.children}</Drawer.Body>
 					<Drawer.Footer color="fg.muted" gap="3">
 						<SidebarProbelmsEmail />
+						<Float placement="bottom-end" offsetY="8" offsetX="9">
+							<ThemeToggler />
+						</Float>
 					</Drawer.Footer>
 				</Drawer.Content>
 			</Drawer.Positioner>

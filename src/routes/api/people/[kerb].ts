@@ -1,6 +1,6 @@
-import type { APIEvent } from "@solidjs/start/server";
+import type { APIHandler } from "@solidjs/start/server";
 
-export async function GET({ params }: APIEvent) {
+export const GET: APIHandler = async ({ params }) => {
 	const kerb = params.kerb;
 	const headers = new Headers();
 
@@ -43,4 +43,4 @@ export async function GET({ params }: APIEvent) {
 	}
 
 	return new Response(yearNumber.toString(), { status: 200 });
-}
+};

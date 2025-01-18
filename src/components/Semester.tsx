@@ -1,7 +1,7 @@
 import { type Component, For, createMemo } from "solid-js";
 
 import { ChevronDownIcon } from "lucide-solid";
-import { HStack } from "styled-system/jsx";
+import { Flex, Grid, HStack } from "styled-system/jsx";
 import Class from "~/components/Class";
 import { Accordion } from "~/components/ui/accordion";
 import { Text } from "~/components/ui/text";
@@ -137,17 +137,22 @@ const Semester: Component<{
 			hidden={store.hideIAP && semesterType() === "IAP"}
 		>
 			<Accordion.ItemTrigger>
-				<HStack gap={6}>
-					<Text width="12em">
-						{semesterYearName()} {semesterType()} {semesterYearRendered()}
-					</Text>
-					<Text minWidth="4.5em" fontSize="sm">
-						Units: {semesterInformation().totalUnits}
-					</Text>
-					<Text fontSize="sm">
-						Hours: {semesterInformation().totalExpectedHours.toFixed(1)}
-					</Text>
-				</HStack>
+				<Grid gap={6} gridTemplateColumns="4fr 6fr" w="full">
+					<Flex justifyContent="space-between" flexWrap="wrap">
+						<Text minWidth="fit-content">
+							{semesterYearName()} {semesterType()} {semesterYearRendered()}
+						</Text>
+						<HStack gap="4">
+							<Text fontSize="sm">
+								Units: {semesterInformation().totalUnits}
+							</Text>
+							<Text fontSize="sm">
+								Hours: {semesterInformation().totalExpectedHours.toFixed(1)}
+							</Text>
+						</HStack>
+					</Flex>
+					<HStack>{/* SMALL CLASSES WILL GO HERE */}</HStack>
+				</Grid>
 				<Accordion.ItemIndicator>
 					<ChevronDownIcon />
 				</Accordion.ItemIndicator>

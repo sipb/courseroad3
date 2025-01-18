@@ -1,43 +1,33 @@
 import { A } from "@solidjs/router";
 import type { Component } from "solid-js";
-import { Box, Flex, HStack, Stack } from "styled-system/jsx";
+import { Box, HStack, Stack, VStack } from "styled-system/jsx";
 
 import { SquareCheckIcon } from "lucide-solid";
-import About from "~/components/About";
 import Audit from "~/components/Audit";
 import Settings from "~/components/Settings";
-import ThemeToggler from "~/components/ThemeToggler";
 import { Icon } from "~/components/ui/icon";
-import { Link } from "~/components/ui/link";
+import { Link, type LinkProps } from "~/components/ui/link";
 import { Text } from "~/components/ui/text";
 
-import type {
-	CourseRequirementsWithKey,
-	Reqs,
-	SimplifiedSelectedSubjects,
-} from "~/context/types";
+import type { CourseRequirementsWithKey } from "~/context/types";
+
+import sipbLogo from "~/assets/simple-fuzzball.png";
 
 const Sidebar: Component<{
 	changeYear: (year: number) => void;
 	reqList: CourseRequirementsWithKey[];
 }> = (props) => {
 	return (
-		<Stack>
-			<SidebarButtons changeYear={props.changeYear} />
-			<Audit reqList={props.reqList} />
-		</Stack>
-	);
-};
-
-const SidebarButtons: Component<{
-	changeYear: (year: number) => void;
-}> = (props) => {
-	return (
-		<HStack>
-			<About />
-			<ThemeToggler />
-			<Settings changeYear={props.changeYear} />
-		</HStack>
+		<>
+			<Stack h="full">
+				<Stack flex={1} overflowY="auto">
+					<Audit reqList={props.reqList} />
+				</Stack>
+				<HStack justifyContent="end">
+					<Settings changeYear={props.changeYear} />
+				</HStack>
+			</Stack>
+		</>
 	);
 };
 
@@ -56,11 +46,11 @@ export const SidebarWarningText: Component = () => {
 						target="_blank"
 						rel="noreferrer"
 						href="https://student.mit.edu/cgi-bin/shrwsdau.sh"
-					>
-						official audit
-					</A>
+					/>
 				)}
-			/>
+			>
+				official audit
+			</Link>
 			,{" "}
 			<Link
 				asChild={(linkProps) => (
@@ -69,11 +59,11 @@ export const SidebarWarningText: Component = () => {
 						target="_blank"
 						rel="noreferrer"
 						href="http://student.mit.edu/catalog/index.cgi"
-					>
-						course catalog
-					</A>
+					/>
 				)}
-			/>
+			>
+				course catalog
+			</Link>
 			, and{" "}
 			<Link
 				asChild={(linkProps) => (
@@ -82,11 +72,11 @@ export const SidebarWarningText: Component = () => {
 						target="_blank"
 						rel="noreferrer"
 						href="http://catalog.mit.edu/degree-charts/"
-					>
-						degree charts
-					</A>
+					/>
 				)}
-			/>{" "}
+			>
+				degree charts
+			</Link>{" "}
 			and confirm with your department advisors.
 		</Text>
 	);
@@ -103,19 +93,19 @@ export const SidebarProbelmsEmail: Component = () => {
 						target="_blank"
 						rel="noreferrer"
 						href="https://fireroad.mit.edu/requirements/"
-					>
-						here
-					</A>
+					/>
 				)}
-			/>{" "}
+			>
+				here
+			</Link>{" "}
 			or send an email to{" "}
 			<Link
 				asChild={(linkProps) => (
-					<a {...linkProps} href="mailto:courseroad@mit.edu">
-						courseroad@mit.edu
-					</a>
+					<a {...linkProps} href="mailto:courseroad@mit.edu" />
 				)}
-			/>
+			>
+				courseroad@mit.edu
+			</Link>
 			.
 		</Text>
 	);
@@ -123,7 +113,7 @@ export const SidebarProbelmsEmail: Component = () => {
 
 export const SidebarTitle: Component = () => {
 	return (
-		<Flex>
+		<VStack alignItems="start">
 			<Box p={2} bg="colorPalette.default" color="colorPalette.fg">
 				<HStack>
 					<Icon asChild={(childProps) => <SquareCheckIcon {...childProps} />} />
@@ -132,7 +122,32 @@ export const SidebarTitle: Component = () => {
 					</Text>
 				</HStack>
 			</Box>
-		</Flex>
+		</VStack>
+	);
+};
+
+// TODO: find nice way of integrating logo
+// do we want to? it would match hydrant ig but idk
+export const SIPBLogo: Component<LinkProps> = (props) => {
+	return (
+		<Link
+			{...props}
+			asChild={(linkProps) => (
+				<A
+					{...linkProps}
+					target="_blank"
+					rel="noreferrer"
+					href="https://sipb.mit.edu"
+				/>
+			)}
+		>
+			By SIPB
+			<Icon
+				asChild={(iconProps) => (
+					<img {...iconProps} src={sipbLogo} alt="SIPB Logo" />
+				)}
+			/>
+		</Link>
 	);
 };
 

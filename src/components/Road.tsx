@@ -2,12 +2,12 @@ import { createServerCookie } from "@solid-primitives/cookies";
 import type { Component } from "solid-js";
 import { Index, Show, createSignal } from "solid-js";
 
-import { useAccordion } from "@ark-ui/solid";
 import { BanIcon } from "lucide-solid";
 import Semester from "~/components/Semester";
 import { Accordion } from "~/components/ui/accordion";
 import { IconButton } from "~/components/ui/icon-button";
 
+import { Float } from "styled-system/jsx";
 import type { SimplifiedSelectedSubjects } from "~/context/types";
 
 const Road: Component<{
@@ -40,14 +40,12 @@ const Road: Component<{
 
 	const [numSems, setNumSems] = createSignal(numSemesters);
 
-	const accordion = useAccordion({
-		value: visibleList(),
-		onValueChange: (e) => setVisibleList(e.value),
-		multiple: true,
-	});
-
 	return (
-		<Accordion.RootProvider lazyMount unmountOnExit value={accordion}>
+		<Accordion.Root
+			value={visibleList()}
+			onValueChange={(e) => setVisibleList(e.value)}
+			multiple
+		>
 			<Index each={[...Array(numSems()).keys()]}>
 				{(index) => (
 					<Semester
@@ -60,11 +58,13 @@ const Road: Component<{
 				)}
 			</Index>
 			<Show when={props.addingFromCard}>
-				<IconButton display="fixed" bottom="2rem" right="2rem">
-					<BanIcon />
-				</IconButton>
+				<Float placement="bottom-end" offset="8">
+					<IconButton>
+						<BanIcon />
+					</IconButton>
+				</Float>
 			</Show>
-		</Accordion.RootProvider>
+		</Accordion.Root>
 	);
 };
 

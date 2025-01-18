@@ -24,7 +24,7 @@ export const recipe = sva({
 			gridTemplateColumns: "1fr",
 			gridTemplateRows: "auto 1fr auto",
 			gridTemplateAreas: "'header' 'main' 'footer'",
-			gridGap: "2",
+			gridGap: "4",
 			height: "100%",
 		},
 		main: {
