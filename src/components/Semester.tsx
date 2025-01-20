@@ -131,6 +131,11 @@ const Semester: Component<{
 		};
 	});
 
+	// TODO: implement warnings
+	const warnings = createMemo(() => {
+		return [] as string[][];
+	});
+
 	return (
 		<Accordion.Item
 			value={props.index.toString()}
@@ -163,7 +168,7 @@ const Semester: Component<{
 						<Class
 							classInfo={subj}
 							semesterIndex={props.index}
-							// warnings={warnings()[props.index]}
+							warnings={warnings()[props.index]}
 							classIndex={index()}
 						/>
 					)}

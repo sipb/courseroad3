@@ -113,7 +113,8 @@ const CourseDataProvider: ParentComponent = (props) => {
 			setStore(
 				"roads",
 				produce((roads) => {
-					delete roads[id];
+					// biome-ignore lint/style/noNonNullAssertion: <explanation>
+					roads[id] = undefined!;
 				}),
 			);
 		},
@@ -422,7 +423,9 @@ const CourseDataProvider: ParentComponent = (props) => {
 		},
 
 		getRoadKeys: () => {
-			return Object.getOwnPropertyNames(store.roads);
+			return Object.getOwnPropertyNames(store.roads).filter(
+				(key) => store.roads[key] !== undefined,
+			);
 		},
 
 		getMatchingAttributes: (gir, hass, ci) => {

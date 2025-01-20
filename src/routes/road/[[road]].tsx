@@ -3,6 +3,7 @@ import { useParams } from "@solidjs/router";
 import { useNavigate } from "@solidjs/router";
 import {
 	For,
+	Show,
 	createEffect,
 	createMemo,
 	createResource,
@@ -305,17 +306,22 @@ export default function RoadPage() {
 						</NavbarContainer>
 						<For each={roadKeys()} fallback={null}>
 							{(roadId) => (
-								<Tabs.Content pt={0} px={2} value={roadId}>
-									<Road
-										selectedSubjects={roads()[roadId].contents.selectedSubjects}
-										roadID={roadId}
-										addingFromCard={addingFromCard() && activeRoad() === roadId}
-										dragSemesterNum={
-											activeRoad() === roadId ? dragSemesterNum() : -1
-										}
-										// changeYear={(e) => authComponentRef?.changeSemester(e)}
-									/>
-								</Tabs.Content>
+								<Show when={roads()[roadId] !== undefined}>
+									<Tabs.Content pt={0} px={2} value={roadId}>
+										<Road
+											selectedSubjects={
+												roads()[roadId].contents.selectedSubjects
+											}
+											roadID={roadId}
+											addingFromCard={
+												addingFromCard() && activeRoad() === roadId
+											}
+											dragSemesterNum={
+												activeRoad() === roadId ? dragSemesterNum() : -1
+											}
+										/>
+									</Tabs.Content>
+								</Show>
 							)}
 						</For>
 					</Tabs.Root>
