@@ -16,18 +16,18 @@
 		"check": "biome check --write ."
 	},
 	"dependencies": {
-		"@ark-ui/solid": "^4.9.0",
+		"@ark-ui/solid": "^4.10.1",
 		"@fontsource-variable/inter": "^5.1.1",
 		"@fontsource-variable/roboto-mono": "^5.1.1",
 		"@solid-primitives/cookies": "^0.0.1",
-		"@solid-primitives/media": "^2.2.10",
-		"@solid-primitives/storage": "^4.2.1",
-		"@solid-primitives/utils": "^6.2.3",
+		"@solid-primitives/media": "^2.3.0",
+		"@solid-primitives/storage": "^4.3.1",
+		"@solid-primitives/utils": "^6.3.0",
 		"@solidjs/meta": "^0.29.4",
 		"@solidjs/router": "^0.15.3",
 		"@solidjs/start": "^1.0.11",
 		"localforage": "^1.10.0",
-		"lucide-solid": "^0.473.0",
+		"lucide-solid": "^0.474.0",
 		"solid-js": "^1.9.4",
 		"ua-parser-js": "^2.0.0",
 		"vinxi": "^0.4.3",
@@ -35,7 +35,7 @@
 		"vite-tsconfig-paths": "^5.1.4"
 	},
 	"overrides": {
-		"vite": "5.4.11"
+		"vite": "5.4.14"
 	},
 	"engines": {
 		"node": ">=18"
@@ -44,18 +44,19 @@
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
 		"@pandacss/dev": "^0.51.1",
+		"@pandacss/preset-base": "^0.51.1",
 		"@park-ui/panda-preset": "^0.43.1",
 		"@solid-cli/core": "^0.0.26",
 		"@solidjs/testing-library": "^0.8.10",
 		"@testing-library/jest-dom": "^6.6.3",
-		"@testing-library/user-event": "^14.6.0",
-		"@types/node": "^22.10.7",
+		"@testing-library/user-event": "^14.6.1",
+		"@types/node": "^22.12.0",
 		"jsdom": "^26.0.0",
 		"postcss": "^8.5.1",
 		"solid-devtools": "^0.33.0",
 		"typescript": "^5.7.3",
-		"vite": "^5.4.12",
-		"vitest": "^3.0.2"
+		"vite": "^5.4.14",
+		"vitest": "^3.0.4"
 	},
 	"bugs": {
 		"url": "https://github.com/sipb/courseroad3/issues"
