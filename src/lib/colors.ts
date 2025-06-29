@@ -1,5 +1,5 @@
 // TODO: find out how to do this without so many type assertions
-import { type RecipeVariant, cva } from "styled-system/css";
+import { cva, type RecipeVariant } from "styled-system/css";
 
 export const validCourses = [
 	"1",

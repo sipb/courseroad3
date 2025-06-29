@@ -1,12 +1,9 @@
-import { type Component, Show, createMemo } from "solid-js";
-
-import { courseColor, getColorClass } from "~/lib/colors";
-
+import { type Component, createMemo, Show } from "solid-js";
 import { Box } from "styled-system/jsx";
 import { Card } from "~/components/ui/card";
 import { Text } from "~/components/ui/text";
-
 import type { SelectedSubjects } from "~/context/types";
+import { courseColor, getColorClass } from "~/lib/colors";
 import { Button } from "./ui/button";
 
 const Class: Component<{

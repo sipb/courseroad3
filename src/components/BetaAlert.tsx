@@ -1,7 +1,5 @@
-import { A } from "@solidjs/router";
-import type { Component } from "solid-js";
-
 import { InfoIcon } from "lucide-solid";
+import type { Component } from "solid-js";
 import { Alert } from "~/components/ui/alert";
 import { Link } from "~/components/ui/link";
 

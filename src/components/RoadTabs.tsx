@@ -1,26 +1,25 @@
 import {
-	type Component,
-	For,
-	Show,
-	createEffect,
-	createMemo,
-	createSignal,
-	on,
-} from "solid-js";
-
-import {
 	CheckIcon,
 	ChevronsUpDownIcon,
 	PencilIcon,
 	PlusIcon,
 	XIcon,
 } from "lucide-solid";
+import {
+	type Component,
+	createEffect,
+	createMemo,
+	createSignal,
+	For,
+	on,
+	Show,
+} from "solid-js";
 import { Stack } from "styled-system/jsx";
 import { Button } from "~/components/ui/button";
 import { Dialog } from "~/components/ui/dialog";
 import { Field } from "~/components/ui/field";
 import { IconButton } from "~/components/ui/icon-button";
-import { Select, createListCollection } from "~/components/ui/select";
+import { createListCollection, Select } from "~/components/ui/select";
 import { Switch } from "~/components/ui/switch";
 import { Tabs } from "~/components/ui/tabs";
 

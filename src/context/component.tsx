@@ -1,9 +1,8 @@
 import { makePersisted } from "@solid-primitives/storage";
-import { type ParentComponent, createResource } from "solid-js";
+import localforage from "localforage";
+import { createResource, type ParentComponent } from "solid-js";
 import { createStore, produce, reconcile } from "solid-js/store";
 import { isServer } from "solid-js/web";
-
-import localforage from "localforage";
 
 import {
 	CourseDataContext,

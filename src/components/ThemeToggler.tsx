@@ -4,8 +4,13 @@ import { defer } from "@solid-primitives/utils";
 import { useHead } from "@solidjs/meta";
 
 import { MoonIcon, SunIcon, SunMoonIcon } from "lucide-solid";
-import { type Component, createEffect, createUniqueId } from "solid-js";
-import { Match, Switch } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	createUniqueId,
+	Match,
+	Switch,
+} from "solid-js";
 import { IconButton } from "~/components/ui/icon-button";
 
 const ThemeToggler: Component = () => {

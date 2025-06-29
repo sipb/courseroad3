@@ -2,12 +2,12 @@ import type { ParentComponent } from "solid-js";
 
 import { Flex, Float, Stack } from "styled-system/jsx";
 import About from "~/components/About";
-import ThemeToggler from "~/components/ThemeToggler";
 import {
 	SidebarProbelmsEmail,
 	SidebarTitle,
 	SidebarWarningText,
 } from "~/components/layout/Sidebar";
+import ThemeToggler from "~/components/ThemeToggler";
 
 const SidebarContainer: ParentComponent<{
 	class?: string;

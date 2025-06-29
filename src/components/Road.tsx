@@ -1,13 +1,11 @@
 import { createServerCookie } from "@solid-primitives/cookies";
-import type { Component } from "solid-js";
-import { Index, Show, createSignal } from "solid-js";
-
 import { BanIcon } from "lucide-solid";
+import type { Component } from "solid-js";
+import { createSignal, Index, Show } from "solid-js";
+import { Float } from "styled-system/jsx";
 import Semester from "~/components/Semester";
 import { Accordion } from "~/components/ui/accordion";
 import { IconButton } from "~/components/ui/icon-button";
-
-import { Float } from "styled-system/jsx";
 import type { SimplifiedSelectedSubjects } from "~/context/types";
 
 const Road: Component<{

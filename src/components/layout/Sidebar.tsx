@@ -1,17 +1,14 @@
 import { A } from "@solidjs/router";
+import { SquareCheckIcon } from "lucide-solid";
 import type { Component } from "solid-js";
 import { Box, HStack, Stack, VStack } from "styled-system/jsx";
-
-import { SquareCheckIcon } from "lucide-solid";
+import sipbLogo from "~/assets/simple-fuzzball.png";
 import Audit from "~/components/Audit";
 import Settings from "~/components/Settings";
 import { Icon } from "~/components/ui/icon";
 import { Link, type LinkProps } from "~/components/ui/link";
 import { Text } from "~/components/ui/text";
-
 import type { CourseRequirementsWithKey } from "~/context/types";
-
-import sipbLogo from "~/assets/simple-fuzzball.png";
 
 const Sidebar: Component<{
 	changeYear: (year: number) => void;

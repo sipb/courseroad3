@@ -1,4 +1,4 @@
-import { Show, children } from "solid-js";
+import { children, Show } from "solid-js";
 import * as StyledSwitch from "./styled/switch";
 
 export interface SwitchProps extends StyledSwitch.RootProps {}

@@ -1,17 +1,16 @@
-import { type Component, For, createMemo, createSignal } from "solid-js";
-import { Portal } from "solid-js/web";
-
 import {
 	CheckIcon,
 	ChevronsUpDownIcon,
 	SettingsIcon,
 	XIcon,
 } from "lucide-solid";
+import { type Component, createMemo, createSignal, For } from "solid-js";
+import { Portal } from "solid-js/web";
 import { Stack } from "styled-system/jsx";
 import { Button } from "~/components/ui/button";
 import { Dialog } from "~/components/ui/dialog";
 import { IconButton } from "~/components/ui/icon-button";
-import { Select, createListCollection } from "~/components/ui/select";
+import { createListCollection, Select } from "~/components/ui/select";
 import { Switch } from "~/components/ui/switch";
 
 import { useCourseDataContext } from "~/context/create";

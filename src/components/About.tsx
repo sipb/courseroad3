@@ -1,8 +1,7 @@
 import { A } from "@solidjs/router";
+import { InfoIcon, XIcon } from "lucide-solid";
 import type { Component } from "solid-js";
 import { Portal } from "solid-js/web";
-
-import { InfoIcon, XIcon } from "lucide-solid";
 import { Stack } from "styled-system/jsx";
 import { Dialog } from "~/components/ui/dialog";
 import { IconButton } from "~/components/ui/icon-button";

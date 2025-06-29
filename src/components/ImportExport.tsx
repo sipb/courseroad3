@@ -1,15 +1,3 @@
-import { type Component, For, Show, createSignal } from "solid-js";
-
-import { useCourseDataContext } from "~/context/create";
-import type {
-	SimplifiedSelectedSubjects,
-	Subject,
-	SubjectWithId,
-} from "~/context/types";
-
-import { flatten } from "~/lib/browserSupport";
-import { getSimpleSelectedSubjects } from "~/lib/sanitizeSubjects";
-
 import {
 	DownloadIcon,
 	FileInputIcon,
@@ -18,6 +6,7 @@ import {
 	UploadIcon,
 	XIcon,
 } from "lucide-solid";
+import { type Component, createSignal, For, Show } from "solid-js";
 import { sva } from "styled-system/css";
 import { Stack } from "styled-system/jsx";
 import ResponsiveButton from "~/components/layout/ResponsiveButton";
@@ -28,6 +17,14 @@ import { Field } from "~/components/ui/field";
 import { FileUpload } from "~/components/ui/file-upload";
 import { IconButton } from "~/components/ui/icon-button";
 import { Textarea } from "~/components/ui/textarea";
+import { useCourseDataContext } from "~/context/create";
+import type {
+	SimplifiedSelectedSubjects,
+	Subject,
+	SubjectWithId,
+} from "~/context/types";
+import { flatten } from "~/lib/browserSupport";
+import { getSimpleSelectedSubjects } from "~/lib/sanitizeSubjects";
 
 export const styles = sva({
 	className: "import-export",
@@ -138,7 +135,7 @@ const ImportExport: Component<{
 				const ss = obj.selectedSubjects
 					.map((s: Subject) => {
 						// make sure it has everything, if not fill in from subjectsIndex or genericCourses
-						let subject: Subject | undefined = undefined;
+						let subject: Subject | undefined;
 						if (
 							s.subject_id &&
 							store.subjectsIndex[s.subject_id] !== undefined

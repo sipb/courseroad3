@@ -108,7 +108,11 @@ export const defaultActions = {
 		id,
 		road,
 		ignoreSet,
-	}: { id: string; road: Road; ignoreSet: boolean }) => {},
+	}: {
+		id: string;
+		road: Road;
+		ignoreSet: boolean;
+	}) => {},
 	setRoads: (roads: Record<string, Road>) => {},
 	setRoadName: ({ id, name }: { id: string; name: string }) => {},
 	setSubjectsInfo: (data: SubjectFull[]) => {},

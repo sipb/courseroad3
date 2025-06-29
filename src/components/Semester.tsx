@@ -1,6 +1,5 @@
-import { type Component, For, createMemo } from "solid-js";
-
 import { ChevronDownIcon } from "lucide-solid";
+import { type Component, createMemo, For } from "solid-js";
 import { Flex, Grid, HStack } from "styled-system/jsx";
 import Class from "~/components/Class";
 import { Accordion } from "~/components/ui/accordion";

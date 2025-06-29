@@ -80,11 +80,10 @@ export const Trigger = withContext<
 	Assign<HTMLStyledProps<"button">, Combobox.TriggerBaseProps>
 >(Combobox.Trigger, "trigger");
 
-export { ComboboxContext as Context } from "@ark-ui/solid";
-
 export type {
 	ComboboxHighlightChangeDetails as HighlightChangeDetails,
 	ComboboxInputValueChangeDetails as InputValueChangeDetails,
 	ComboboxOpenChangeDetails as OpenChangeDetails,
 	ComboboxValueChangeDetails as ValueChangeDetails,
 } from "@ark-ui/solid";
+export { ComboboxContext as Context } from "@ark-ui/solid";

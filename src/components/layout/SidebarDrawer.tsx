@@ -3,12 +3,12 @@ import type { ParentComponent } from "solid-js";
 import { Float } from "styled-system/jsx";
 
 import About from "~/components/About";
-import ThemeToggler from "~/components/ThemeToggler";
 import {
 	SidebarProbelmsEmail,
 	SidebarTitle,
 	SidebarWarningText,
 } from "~/components/layout/Sidebar";
+import ThemeToggler from "~/components/ThemeToggler";
 import { Drawer } from "~/components/ui/drawer";
 import { IconButton } from "~/components/ui/icon-button";
 

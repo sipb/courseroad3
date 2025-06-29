@@ -1,4 +1,4 @@
-import { type JSX, createContext, useContext } from "solid-js";
+import { createContext, type JSX, useContext } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { cx } from "styled-system/css";
 import { isCssProperty, styled } from "styled-system/jsx";

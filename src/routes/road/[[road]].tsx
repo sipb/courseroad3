@@ -1,39 +1,36 @@
 import { getCookiesString, parseCookie } from "@solid-primitives/cookies";
-import { useParams } from "@solidjs/router";
-import { useNavigate } from "@solidjs/router";
+import { useNavigate, useParams } from "@solidjs/router";
 import {
-	For,
-	Show,
 	createEffect,
 	createMemo,
 	createResource,
 	createSignal,
+	For,
 	on,
 	onMount,
+	Show,
 } from "solid-js";
 import { createStore } from "solid-js/store";
-
+import { css } from "styled-system/css";
+import { Flex } from "styled-system/jsx";
+import Auth, { type AuthRef } from "~/components/Auth";
+import BetaAlert from "~/components/BetaAlert";
+import ImportExport from "~/components/ImportExport";
+import { recipe as layoutRecipe } from "~/components/layout/layout.recipe";
+import NavbarContainer from "~/components/layout/NavbarContainer";
+import Sidebar from "~/components/layout/Sidebar";
+import SidebarContainer from "~/components/layout/SidebarContainer";
+import SidebarDrawer from "~/components/layout/SidebarDrawer";
+import Road from "~/components/Road";
+import RoadTabs from "~/components/RoadTabs";
+import { Input } from "~/components/ui/input";
+import { Tabs } from "~/components/ui/tabs";
 import { defaultState, useCourseDataContext } from "~/context/create";
 import type {
 	CourseRequirements,
 	Reqs,
 	SimplifiedSelectedSubjects,
 } from "~/context/types";
-
-import { css } from "styled-system/css";
-import { Flex } from "styled-system/jsx";
-import Auth, { type AuthRef } from "~/components/Auth";
-import BetaAlert from "~/components/BetaAlert";
-import ImportExport from "~/components/ImportExport";
-import Road from "~/components/Road";
-import RoadTabs from "~/components/RoadTabs";
-import NavbarContainer from "~/components/layout/NavbarContainer";
-import Sidebar from "~/components/layout/Sidebar";
-import SidebarContainer from "~/components/layout/SidebarContainer";
-import SidebarDrawer from "~/components/layout/SidebarDrawer";
-import { recipe as layoutRecipe } from "~/components/layout/layout.recipe";
-import { Input } from "~/components/ui/input";
-import { Tabs } from "~/components/ui/tabs";
 import { flatten } from "~/lib/browserSupport";
 
 const styles = layoutRecipe();
@@ -57,14 +54,14 @@ export default function RoadPage() {
 	const cookiesString = getCookiesString();
 	const navigate = useNavigate();
 
-	const [reqTrees, setReqTrees] = createStore({} as Record<string, Reqs>);
-	const [dragSemesterNum, setDragSemesterNum] = createSignal(-1);
+	const [_reqTrees, setReqTrees] = createStore({} as Record<string, Reqs>);
+	const [dragSemesterNum, _setDragSemesterNum] = createSignal(-1);
 	const [justLoaded, setJustLoaded] = createSignal(true);
-	const [conflictDialog, setConflictDialog] = createSignal(false);
-	const [conflictInfo, setConflictInfo] = createSignal(undefined);
-	const [searchInput, setSearchInput] = createSignal("");
-	const [dismissedCookies, setDismissedCookies] = createSignal(false);
-	const [searchOpen, setSearchOpen] = createSignal(false);
+	const [_conflictDialog, _setConflictDialogg] = createSignal(false);
+	const [conflictInfo, _setConflictInfo] = createSignal(undefined);
+	const [_searchInput, _setSearchInputt] = createSignal("");
+	const [_dismissedCookies, _setDismissedCookiess] = createSignal(false);
+	const [_searchOpen, _setSearchOpenn] = createSignal(false);
 	const [isUpdatingFulfillment, setIsUpdatingFulfillment] = createSignal(false);
 
 	let authComponentRef: AuthRef | undefined;
@@ -252,81 +249,75 @@ export default function RoadPage() {
 	};
 
 	return (
-		<>
-			<Flex>
-				<SidebarContainer
-					class={styles.sidebar}
-					headerClass={styles.sidebarHeader}
-					bodyClass={styles.sidebarBody}
-					footerClass={styles.sidebarFooter}
+		<Flex>
+			<SidebarContainer
+				class={styles.sidebar}
+				headerClass={styles.sidebarHeader}
+				bodyClass={styles.sidebarBody}
+				footerClass={styles.sidebarFooter}
+			>
+				<Sidebar
+					changeYear={(e) => authComponentRef?.changeSemester(e)}
+					reqList={reqList()}
+				/>
+			</SidebarContainer>
+			<main class={styles.main}>
+				<Tabs.Root
+					lazyMount
+					unmountOnExit
+					value={activeRoad()}
+					onValueChange={(e) => setActiveRoad(e.value)}
 				>
-					<Sidebar
-						changeYear={(e) => authComponentRef?.changeSemester(e)}
-						reqList={reqList()}
-					/>
-				</SidebarContainer>
-				<main class={styles.main}>
-					<Tabs.Root
-						lazyMount
-						unmountOnExit
-						value={activeRoad()}
-						onValueChange={(e) => setActiveRoad(e.value)}
-					>
-						<NavbarContainer>
-							<BetaAlert />
-							<Flex flexDirection="row" justifyContent="space-between">
-								<ImportExport addRoad={addRoad} />
-								<Auth
-									justLoaded={justLoaded()}
-									conflictInfo={conflictInfo()}
-									conflict={conflict}
-									resolveConflict={resolveConflict}
-									ref={authComponentRef}
-								/>
-								<div>
-									<Input
-										placeholder="Add classes"
-										class={css({ width: { base: 32, md: 40, lg: 52 } })}
-										me={2}
-									/>
-									<SidebarDrawer>
-										<Sidebar
-											changeYear={(e) => authComponentRef?.changeSemester(e)}
-											reqList={reqList()}
-										/>
-									</SidebarDrawer>
-								</div>
-							</Flex>
-							<RoadTabs
-								addRoad={addRoad}
-								deleteRoad={(e) => authComponentRef?.deleteRoad(e)}
-								retrieve={(e) => authComponentRef?.retrieveRoad(e)}
-								roadKeys={roadKeys()}
+					<NavbarContainer>
+						<BetaAlert />
+						<Flex flexDirection="row" justifyContent="space-between">
+							<ImportExport addRoad={addRoad} />
+							<Auth
+								justLoaded={justLoaded()}
+								conflictInfo={conflictInfo()}
+								conflict={conflict}
+								resolveConflict={resolveConflict}
+								ref={authComponentRef}
 							/>
-						</NavbarContainer>
-						<For each={roadKeys()} fallback={null}>
-							{(roadId) => (
-								<Show when={roads()[roadId] !== undefined}>
-									<Tabs.Content pt={0} px={2} value={roadId}>
-										<Road
-											selectedSubjects={
-												roads()[roadId].contents.selectedSubjects
-											}
-											roadID={roadId}
-											addingFromCard={
-												addingFromCard() && activeRoad() === roadId
-											}
-											dragSemesterNum={
-												activeRoad() === roadId ? dragSemesterNum() : -1
-											}
-										/>
-									</Tabs.Content>
-								</Show>
-							)}
-						</For>
-					</Tabs.Root>
-				</main>
-			</Flex>
-		</>
+							<div>
+								<Input
+									placeholder="Add classes"
+									class={css({ width: { base: 32, md: 40, lg: 52 } })}
+									me={2}
+								/>
+								<SidebarDrawer>
+									<Sidebar
+										changeYear={(e) => authComponentRef?.changeSemester(e)}
+										reqList={reqList()}
+									/>
+								</SidebarDrawer>
+							</div>
+						</Flex>
+						<RoadTabs
+							addRoad={addRoad}
+							deleteRoad={(e) => authComponentRef?.deleteRoad(e)}
+							retrieve={(e) => authComponentRef?.retrieveRoad(e)}
+							roadKeys={roadKeys()}
+						/>
+					</NavbarContainer>
+					<For each={roadKeys()} fallback={null}>
+						{(roadId) => (
+							<Show when={roads()[roadId] !== undefined}>
+								<Tabs.Content pt={0} px={2} value={roadId}>
+									<Road
+										selectedSubjects={roads()[roadId].contents.selectedSubjects}
+										roadID={roadId}
+										addingFromCard={addingFromCard() && activeRoad() === roadId}
+										dragSemesterNum={
+											activeRoad() === roadId ? dragSemesterNum() : -1
+										}
+									/>
+								</Tabs.Content>
+							</Show>
+						)}
+					</For>
+				</Tabs.Root>
+			</main>
+		</Flex>
 	);
 }

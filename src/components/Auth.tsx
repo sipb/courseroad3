@@ -1,31 +1,30 @@
 import { cookieStorage, makePersisted } from "@solid-primitives/storage";
 import { useNavigate, useParams, useSearchParams } from "@solidjs/router";
 import {
-	type Accessor,
-	type Component,
-	For,
-	type Setter,
-	Show,
-	createEffect,
-	createMemo,
-	createSignal,
-	mergeProps,
-	on,
-	onMount,
-} from "solid-js";
-import { Dynamic } from "solid-js/web";
-
-import {
 	LogInIcon,
 	LogOutIcon,
 	SaveIcon,
 	TriangleAlertIcon,
 } from "lucide-solid";
+import {
+	type Accessor,
+	type Component,
+	createEffect,
+	createMemo,
+	createSignal,
+	For,
+	mergeProps,
+	on,
+	onMount,
+	type Setter,
+	Show,
+} from "solid-js";
+import { Dynamic } from "solid-js/web";
 import { Flex } from "styled-system/jsx";
+import { UAParser } from "ua-parser-js";
 import ResponsiveButton from "~/components/layout/ResponsiveButton";
 import { Icon } from "~/components/ui/icon";
 import { Tooltip } from "~/components/ui/tooltip";
-
 import { useCourseDataContext } from "~/context/create";
 import type {
 	Conflict,
@@ -36,8 +35,6 @@ import type {
 	SyncRoadPost,
 	SyncRoadResponse,
 } from "~/context/types";
-
-import { UAParser } from "ua-parser-js";
 import { flatten } from "~/lib/browserSupport";
 import { getSimpleSelectedSubjects } from "~/lib/sanitizeSubjects";
 
